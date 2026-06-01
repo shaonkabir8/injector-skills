@@ -1,5 +1,5 @@
 $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME ".claude" }
-$Flag = Join-Path $ClaudeDir ".caveman-active"
+$Flag = Join-Path $ClaudeDir ".injector-skills-active"
 if (-not (Test-Path $Flag)) { exit 0 }
 
 # Refuse reparse points (symlinks / junctions) and oversized files. Without
@@ -39,12 +39,12 @@ if ([string]::IsNullOrEmpty($Mode) -or $Mode -eq "full") {
 }
 
 # Savings suffix: on by default. Opt out via CAVEMAN_STATUSLINE_SAVINGS=0.
-# Reads a pre-rendered string written by caveman-stats.js. Refuses reparse
+# Reads a pre-rendered string written by injector-skills-stats.js. Refuses reparse
 # points and strips control bytes (matches statusline.sh hardening). Until
-# /caveman-stats has run at least once, the suffix file is absent and nothing
+# /injector-skills-stats has run at least once, the suffix file is absent and nothing
 # is rendered — safe default for fresh installs.
 if ($env:CAVEMAN_STATUSLINE_SAVINGS -ne "0") {
-    $SavingsFile = Join-Path $ClaudeDir ".caveman-statusline-suffix"
+    $SavingsFile = Join-Path $ClaudeDir ".injector-skills-statusline-suffix"
     if (Test-Path $SavingsFile) {
         try {
             $SavingsItem = Get-Item -LiteralPath $SavingsFile -Force -ErrorAction Stop

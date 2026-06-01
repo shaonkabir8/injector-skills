@@ -5,16 +5,16 @@ labels: bug
 ---
 
 **What happen**
-<!-- What caveman do wrong -->
+<!-- What injector-skills do wrong -->
 
 **Expected**
-<!-- What caveman should do -->
+<!-- What injector-skills should do -->
 
 **Before/after example**
 ```
 Input: [your prompt]
-Got:   [what caveman said]
-Want:  [what caveman should say]
+Got:   [what injector-skills said]
+Want:  [what injector-skills should say]
 ```
 
 **Platform**

@@ -3,7 +3,7 @@ name: cavecrew-investigator
 description: >
   Read-only code locator. Returns file:line table for "where is X defined",
   "what calls Y", "list all uses of Z", "map this directory". Output is
-  caveman-compressed so the main thread eats ~60% fewer tokens than
+  injector-skills-compressed so the main thread eats ~60% fewer tokens than
   vanilla Explore. Refuses to suggest fixes.
 tools: [Read, Grep, Glob, Bash]
 model: haiku
@@ -46,11 +46,11 @@ Q: "where symlink-safe flag write?"
 
 ```
 Defs:
-- hooks/caveman-config.js:81 — `safeWriteFlag` — atomic write w/ O_NOFOLLOW
-- hooks/caveman-config.js:160 — `readFlag` — paired reader
+- hooks/injector-skills-config.js:81 — `safeWriteFlag` — atomic write w/ O_NOFOLLOW
+- hooks/injector-skills-config.js:160 — `readFlag` — paired reader
 Callers:
-- hooks/caveman-mode-tracker.js:33,87
-- hooks/caveman-activate.js:40
+- hooks/injector-skills-mode-tracker.js:33,87
+- hooks/injector-skills-activate.js:40
 Tests:
 - tests/test_symlink_flag.js — 12 cases
 2 defs, 3 callers, 1 test file.

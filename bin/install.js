@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// caveman — unified cross-platform installer.
+// injector-skills — unified cross-platform installer.
 //
 // One Node script replaces the old install.sh + install.ps1 + src/hooks/install.sh
 // + src/hooks/install.ps1 quartet. Single source of truth. Works on macOS, Linux,
@@ -8,7 +8,7 @@
 //
 // Distribution:
 //   Local clone: node bin/install.js [flags]
-//   curl|bash:   delegated from install.sh shim → npx -y github:JuliusBrussee/caveman -- [flags]
+//   curl|bash:   delegated from install.sh shim → npx -y github:JuliusBrussee/injector-skills -- [flags]
 //   Windows:     pwsh install.ps1 [flags] → same npx delegation
 //
 // Pure stdlib, zero npm runtime deps.
@@ -24,22 +24,22 @@ const readline = require('readline');
 const SETTINGS = require('./lib/settings');
 const OPENCLAW = require('./lib/openclaw');
 
-const REPO = 'JuliusBrussee/caveman';
+const REPO = 'JuliusBrussee/injector-skills';
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main`;
 const HOOKS_REMOTE = `${RAW_BASE}/src/hooks`;
-const INIT_SCRIPT_URL = `${RAW_BASE}/src/tools/caveman-init.js`;
-const MCP_SHRINK_PKG = 'caveman-shrink';
+const INIT_SCRIPT_URL = `${RAW_BASE}/src/tools/injector-skills-init.js`;
+const MCP_SHRINK_PKG = 'injector-skills-shrink';
 // Hook files to copy. Statusline ships in both .sh (macOS/Linux) and .ps1
 // (Windows) flavors — copy both regardless of host OS so a roaming
 // $CLAUDE_CONFIG_DIR (e.g. dotfiles repo) keeps working across platforms.
 const HOOK_FILES = [
   'package.json',
-  'caveman-config.js',
-  'caveman-activate.js',
-  'caveman-mode-tracker.js',
-  'caveman-stats.js',
-  'caveman-statusline.sh',
-  'caveman-statusline.ps1',
+  'injector-skills-config.js',
+  'injector-skills-activate.js',
+  'injector-skills-mode-tracker.js',
+  'injector-skills-stats.js',
+  'injector-skills-statusline.sh',
+  'injector-skills-statusline.ps1',
 ];
 
 // ── Argv ───────────────────────────────────────────────────────────────────
@@ -86,7 +86,7 @@ function parseArgs(argv) {
         break;
       }
       default:
-        die(`error: unknown flag: ${a}\nrun 'caveman --help' for usage`);
+        die(`error: unknown flag: ${a}\nrun 'injector-skills --help' for usage`);
     }
   }
   if (opts.all && opts.minimal) die('error: --all and --minimal are mutually exclusive');
@@ -100,7 +100,7 @@ function parseArgs(argv) {
     const knownIds = new Set(PROVIDERS.map(p => p.id));
     for (const id of opts.only) {
       if (!knownIds.has(id)) {
-        die(`error: unknown agent: ${id}\n  see 'caveman --list' for valid ids`);
+        die(`error: unknown agent: ${id}\n  see 'injector-skills --list' for valid ids`);
       }
     }
   }
@@ -125,14 +125,14 @@ function checkWslWindowsNode() {
   // Windows-Node executing inside WSL has homedir like /mnt/c/Users/... which
   // breaks every config-dir resolution. Detect and abort with a clear hint.
   if (process.env.WSL_DISTRO_NAME) {
-    die('caveman: detected Windows Node.js running inside WSL.\n' +
+    die('injector-skills: detected Windows Node.js running inside WSL.\n' +
         '         Install Linux-native Node inside your WSL distro and re-run there.\n' +
         '         (WSL_DISTRO_NAME=' + process.env.WSL_DISTRO_NAME + ')');
   }
   try {
     const v = fs.readFileSync('/proc/version', 'utf8').toLowerCase();
     if (v.includes('microsoft') || v.includes('wsl')) {
-      die('caveman: detected Windows Node.js running inside WSL (/proc/version).\n' +
+      die('injector-skills: detected Windows Node.js running inside WSL (/proc/version).\n' +
           '         Install Linux-native Node inside your WSL distro and re-run there.');
     }
   } catch (_) { /* /proc/version absent on real Windows — fine */ }
@@ -140,7 +140,7 @@ function checkWslWindowsNode() {
 
 function checkNodeVersion() {
   const major = parseInt(process.versions.node.split('.')[0], 10);
-  if (major < 18) die(`caveman: Node ${process.versions.node} too old. Need Node ≥18. https://nodejs.org`);
+  if (major < 18) die(`injector-skills: Node ${process.versions.node} too old. Need Node ≥18. https://nodejs.org`);
 }
 
 // ── Provider matrix ────────────────────────────────────────────────────────
@@ -388,14 +388,14 @@ async function installClaude(ctx) {
   let alreadyInstalled = false;
   if (!opts.force) {
     const r = captureSpawn('claude', ['plugin', 'list']);
-    if (r.status === 0 && /caveman/i.test(r.stdout || '')) alreadyInstalled = true;
+    if (r.status === 0 && /injector-skills/i.test(r.stdout || '')) alreadyInstalled = true;
   }
   if (alreadyInstalled) {
-    note('  caveman plugin already installed (use --force to reinstall)');
+    note('  injector-skills plugin already installed (use --force to reinstall)');
     results.skipped.push(['claude', 'plugin already installed']);
   } else {
     const r1 = runSpawn('claude', ['plugin', 'marketplace', 'add', REPO], null, opts.dryRun);
-    const r2 = runSpawn('claude', ['plugin', 'install', 'caveman@caveman'], null, opts.dryRun);
+    const r2 = runSpawn('claude', ['plugin', 'install', 'injector-skills@injector-skills'], null, opts.dryRun);
     if ((r1.status || 0) === 0 && (r2.status || 0) === 0) results.installed.push('claude');
     else results.failed.push(['claude', 'claude plugin install failed']);
   }
@@ -409,11 +409,11 @@ async function installClaude(ctx) {
   }
 
   if (opts.withMcpShrink) {
-    say('  → wiring caveman-shrink MCP proxy (--with-mcp-shrink)');
+    say('  → wiring injector-skills-shrink MCP proxy (--with-mcp-shrink)');
     const r = installMcpShrink(ctx);
-    if (r.kind === 'ok')   results.installed.push('caveman-shrink');
-    if (r.kind === 'skip') results.skipped.push(['caveman-shrink', r.why]);
-    if (r.kind === 'fail') results.failed.push(['caveman-shrink', r.why]);
+    if (r.kind === 'ok')   results.installed.push('injector-skills-shrink');
+    if (r.kind === 'skip') results.skipped.push(['injector-skills-shrink', r.why]);
+    if (r.kind === 'fail') results.failed.push(['injector-skills-shrink', r.why]);
   }
 
   process.stdout.write('\n');
@@ -426,8 +426,8 @@ function installGemini(ctx) {
 
   if (!opts.force) {
     const r = captureSpawn('gemini', ['extensions', 'list']);
-    if (r.status === 0 && /caveman/i.test(r.stdout || '')) {
-      note('  caveman extension already installed (use --force to reinstall)');
+    if (r.status === 0 && /injector-skills/i.test(r.stdout || '')) {
+      note('  injector-skills extension already installed (use --force to reinstall)');
       results.skipped.push(['gemini', 'extension already installed']);
       process.stdout.write('\n');
       return;
@@ -462,16 +462,16 @@ function installViaSkills(ctx, prov) {
 // opencode.json with a "plugin" array entry. Mirrors the Claude Code hook
 // architecture as closely as opencode allows — only the statusline is missing
 // (opencode's TUI exposes no plugin-writable badge).
-const OPENCODE_SKILL_DIRS  = ['caveman', 'caveman-commit', 'caveman-review', 'caveman-help', 'caveman-stats', 'caveman-compress', 'cavecrew'];
+const OPENCODE_SKILL_DIRS  = ['injector-skills', 'injector-skills-commit', 'injector-skills-review', 'injector-skills-help', 'injector-skills-stats', 'injector-skills-compress', 'cavecrew'];
 const OPENCODE_AGENT_FILES = ['cavecrew-investigator.md', 'cavecrew-builder.md', 'cavecrew-reviewer.md'];
-const OPENCODE_COMMAND_FILES = ['caveman.md', 'caveman-commit.md', 'caveman-review.md', 'caveman-compress.md', 'caveman-stats.md', 'caveman-help.md'];
-const OPENCODE_PLUGIN_REL = './plugins/caveman/plugin.js';
-const OPENCODE_AGENTS_MD_SENTINEL = 'Respond terse like smart caveman';
+const OPENCODE_COMMAND_FILES = ['injector-skills.md', 'injector-skills-commit.md', 'injector-skills-review.md', 'injector-skills-compress.md', 'injector-skills-stats.md', 'injector-skills-help.md'];
+const OPENCODE_PLUGIN_REL = './plugins/injector-skills/plugin.js';
+const OPENCODE_AGENTS_MD_SENTINEL = 'Respond terse like smart injector-skills';
 // Marker fence for the opencode AGENTS.md ruleset block. Same convention as
 // bin/lib/openclaw.js for SOUL.md — lets us strip our block cleanly even when
 // the user has authored content above AND below it.
-const OPENCODE_AGENTS_MD_BEGIN = '<!-- caveman-begin -->';
-const OPENCODE_AGENTS_MD_END = '<!-- caveman-end -->';
+const OPENCODE_AGENTS_MD_BEGIN = '<!-- injector-skills-begin -->';
+const OPENCODE_AGENTS_MD_END = '<!-- injector-skills-end -->';
 
 function opencodeConfigDir() {
   if (process.env.XDG_CONFIG_HOME) return path.join(process.env.XDG_CONFIG_HOME, 'opencode');
@@ -495,15 +495,15 @@ function installOpencode(ctx) {
   say('→ opencode detected');
 
   if (!repoRoot) {
-    warn('  opencode native install requires a local clone of the caveman repo.');
-    note('  Re-run from a clone: git clone https://github.com/' + REPO + ' && cd caveman && node bin/install.js --only opencode');
+    warn('  opencode native install requires a local clone of the injector-skills repo.');
+    note('  Re-run from a clone: git clone https://github.com/' + REPO + ' && cd injector-skills && node bin/install.js --only opencode');
     results.failed.push(['opencode', 'native install requires local repo clone']);
     process.stdout.write('\n');
     return;
   }
 
   const dir = opencodeConfigDir();
-  const pluginDir   = path.join(dir, 'plugins', 'caveman');
+  const pluginDir   = path.join(dir, 'plugins', 'injector-skills');
   const commandsDir = path.join(dir, 'commands');
   const agentsDir   = path.join(dir, 'agents');
   const skillsDir   = path.join(dir, 'skills');
@@ -512,11 +512,11 @@ function installOpencode(ctx) {
 
   if (opts.dryRun) {
     note(`  would mkdir ${pluginDir}/, ${commandsDir}/, ${agentsDir}/, ${skillsDir}/`);
-    note(`  would copy plugin.js + package.json + caveman-config.cjs into ${pluginDir}/`);
+    note(`  would copy plugin.js + package.json + injector-skills-config.cjs into ${pluginDir}/`);
     note(`  would copy ${OPENCODE_COMMAND_FILES.length} command files into ${commandsDir}/`);
     note(`  would copy ${OPENCODE_AGENT_FILES.length} cavecrew agents into ${agentsDir}/`);
     note(`  would copy ${OPENCODE_SKILL_DIRS.length} skill dirs into ${skillsDir}/`);
-    note(`  would patch ${opencodeJson} with "plugin" entry${opts.withMcpShrink ? ' + caveman-shrink MCP' : ''}`);
+    note(`  would patch ${opencodeJson} with "plugin" entry${opts.withMcpShrink ? ' + injector-skills-shrink MCP' : ''}`);
     note(`  would write Tier-3 ruleset to ${agentsMd}`);
     results.installed.push('opencode');
     process.stdout.write('\n');
@@ -524,7 +524,7 @@ function installOpencode(ctx) {
   }
 
   try {
-    // 1. Plugin dir — copy plugin.js, package.json, caveman-config.js (sibling).
+    // 1. Plugin dir — copy plugin.js, package.json, injector-skills-config.js (sibling).
     //    Same `--force` semantic as commands/agents/skills below: re-runs leave
     //    user edits to plugin.js alone unless --force is passed.
     fs.mkdirSync(pluginDir, { recursive: true });
@@ -534,8 +534,8 @@ function installOpencode(ctx) {
       [path.join(pluginSrc, 'package.json'), path.join(pluginDir, 'package.json')],
       // Renamed to .cjs because the plugin dir is "type": "module" — a bare .js
       // sibling would be loaded as ESM and break the plugin's require() bridge.
-      [path.join(repoRoot, 'src', 'hooks', 'caveman-config.js'),
-       path.join(pluginDir, 'caveman-config.cjs')],
+      [path.join(repoRoot, 'src', 'hooks', 'injector-skills-config.js'),
+       path.join(pluginDir, 'injector-skills-config.cjs')],
     ];
     for (const [src, dest] of pluginPayload) {
       if (fs.existsSync(dest) && !opts.force) {
@@ -585,7 +585,7 @@ function installOpencode(ctx) {
     //    a later --uninstall can strip our block cleanly even if the user has
     //    authored content above AND below it. Idempotency check uses the begin
     //    marker (the legacy sentinel still matches old installs).
-    const ruleBody = fs.readFileSync(path.join(repoRoot, 'src', 'rules', 'caveman-activate.md'), 'utf8').trimEnd() + '\n';
+    const ruleBody = fs.readFileSync(path.join(repoRoot, 'src', 'rules', 'injector-skills-activate.md'), 'utf8').trimEnd() + '\n';
     const fencedBlock = `${OPENCODE_AGENTS_MD_BEGIN}\n${ruleBody}${OPENCODE_AGENTS_MD_END}\n`;
     if (fs.existsSync(agentsMd)) {
       const existing = fs.readFileSync(agentsMd, 'utf8');
@@ -593,28 +593,28 @@ function installOpencode(ctx) {
         && existing.includes(OPENCODE_AGENTS_MD_END);
       const alreadyByLegacySentinel = !alreadyFenced && existing.includes(OPENCODE_AGENTS_MD_SENTINEL);
       if (alreadyFenced) {
-        note(`  ${agentsMd} already contains caveman ruleset`);
+        note(`  ${agentsMd} already contains injector-skills ruleset`);
       } else if (alreadyByLegacySentinel) {
-        note(`  ${agentsMd} contains a legacy (un-fenced) caveman block — leaving as-is`);
+        note(`  ${agentsMd} contains a legacy (un-fenced) injector-skills block — leaving as-is`);
         note('  re-run with --force to replace it with a fenced block');
         if (opts.force) {
           // Replace the entire file with a clean fenced version. The legacy
           // path didn't fence, so we can't isolate the block — full rewrite is
           // the only safe option under --force.
           fs.writeFileSync(agentsMd, fencedBlock, { mode: 0o644 });
-          process.stdout.write(`  rewrote ${agentsMd} with fenced caveman block\n`);
+          process.stdout.write(`  rewrote ${agentsMd} with fenced injector-skills block\n`);
         }
       } else {
         const sep = existing.endsWith('\n\n') ? '' : (existing.endsWith('\n') ? '\n' : '\n\n');
         fs.writeFileSync(agentsMd, existing + sep + fencedBlock, { mode: 0o644 });
-        process.stdout.write(`  appended caveman ruleset to ${agentsMd}\n`);
+        process.stdout.write(`  appended injector-skills ruleset to ${agentsMd}\n`);
       }
     } else {
       fs.writeFileSync(agentsMd, fencedBlock, { mode: 0o644 });
       process.stdout.write(`  installed: ${agentsMd}\n`);
     }
 
-    // 6. opencode.json — add plugin entry; optional caveman-shrink MCP.
+    // 6. opencode.json — add plugin entry; optional injector-skills-shrink MCP.
     let cfg = SETTINGS.readSettings(opencodeJson);
     if (cfg === null) {
       warn(`  ${opencodeJson} unparseable; will not touch it. Edit manually then re-run.`);
@@ -634,13 +634,13 @@ function installOpencode(ctx) {
     }
     if (opts.withMcpShrink) {
       if (!cfg.mcp || typeof cfg.mcp !== 'object') cfg.mcp = {};
-      if (!cfg.mcp['caveman-shrink']) {
-        cfg.mcp['caveman-shrink'] = {
+      if (!cfg.mcp['injector-skills-shrink']) {
+        cfg.mcp['injector-skills-shrink'] = {
           type: 'local',
           command: ['npx', '-y', MCP_SHRINK_PKG],
           enabled: true,
         };
-        process.stdout.write('  registered caveman-shrink MCP server\n');
+        process.stdout.write('  registered injector-skills-shrink MCP server\n');
       }
     }
     SETTINGS.writeSettings(opencodeJson, cfg);
@@ -655,10 +655,10 @@ function installOpencode(ctx) {
 }
 
 // ── OpenClaw native install ───────────────────────────────────────────────
-// Drops skills/caveman/ into the OpenClaw workspace and appends a small
+// Drops skills/injector-skills/ into the OpenClaw workspace and appends a small
 // auto-injected bootstrap block to the workspace SOUL.md. Always-on behavior
 // comes from SOUL.md (auto-injected each turn); the skill folder makes
-// caveman discoverable via `openclaw skills list`. See bin/lib/openclaw.js
+// injector-skills discoverable via `openclaw skills list`. See bin/lib/openclaw.js
 // for the actual file writes.
 function installOpenclaw(ctx) {
   const { say, note, warn, opts, repoRoot, results } = ctx;
@@ -715,7 +715,7 @@ async function installHooks(ctx) {
   }
 
   // chmod statusline (no-op on Windows)
-  try { fs.chmodSync(path.join(hooksDir, 'caveman-statusline.sh'), 0o755); } catch (_) {}
+  try { fs.chmodSync(path.join(hooksDir, 'injector-skills-statusline.sh'), 0o755); } catch (_) {}
 
   // Merge into settings.json
   let settings = SETTINGS.readSettings(settingsPath);
@@ -732,25 +732,25 @@ async function installHooks(ctx) {
   }
 
   const node = absoluteNodePath();
-  const activate = path.join(hooksDir, 'caveman-activate.js');
-  const tracker  = path.join(hooksDir, 'caveman-mode-tracker.js');
-  const statusline = path.join(hooksDir, 'caveman-statusline.sh');
+  const activate = path.join(hooksDir, 'injector-skills-activate.js');
+  const tracker  = path.join(hooksDir, 'injector-skills-mode-tracker.js');
+  const statusline = path.join(hooksDir, 'injector-skills-statusline.sh');
 
   // Migrate any legacy bare-`node` invocations of our managed scripts.
   SETTINGS.rewriteLegacyManagedHookCommands(settings, node);
 
   SETTINGS.addCommandHook(settings, 'SessionStart', {
     command: `"${node}" "${activate}"`,
-    marker: 'caveman-activate',
+    marker: 'injector-skills-activate',
     timeout: 5,
-    statusMessage: 'Loading caveman mode...',
+    statusMessage: 'Loading injector-skills mode...',
   });
 
   SETTINGS.addCommandHook(settings, 'UserPromptSubmit', {
     command: `"${node}" "${tracker}"`,
-    marker: 'caveman-mode-tracker',
+    marker: 'injector-skills-mode-tracker',
     timeout: 5,
-    statusMessage: 'Tracking caveman mode...',
+    statusMessage: 'Tracking injector-skills mode...',
   });
 
   // Statusline — set if absent or already pointing at our script.
@@ -759,7 +759,7 @@ async function installHooks(ctx) {
   // Use -ExecutionPolicy Bypass so users without RemoteSigned policy can run.
   const psHost = IS_WIN && hasCmd('pwsh') ? 'pwsh' : (IS_WIN ? 'powershell' : null);
   const slCmd = IS_WIN
-    ? `${psHost} -NoProfile -ExecutionPolicy Bypass -File "${path.join(hooksDir, 'caveman-statusline.ps1')}"`
+    ? `${psHost} -NoProfile -ExecutionPolicy Bypass -File "${path.join(hooksDir, 'injector-skills-statusline.ps1')}"`
     : `bash "${statusline}"`;
   if (!settings.statusLine) {
     settings.statusLine = { type: 'command', command: slCmd };
@@ -768,10 +768,10 @@ async function installHooks(ctx) {
     const existing = typeof settings.statusLine === 'string'
       ? settings.statusLine
       : (settings.statusLine.command || '');
-    if (existing.includes(statusline) || existing.includes('caveman-statusline')) {
+    if (existing.includes(statusline) || existing.includes('injector-skills-statusline')) {
       process.stdout.write('  statusline badge already configured.\n');
     } else {
-      process.stdout.write('  NOTE: existing statusline detected — caveman badge NOT added.\n');
+      process.stdout.write('  NOTE: existing statusline detected — injector-skills badge NOT added.\n');
       process.stdout.write('        See src/hooks/README.md to add the badge to your existing statusline.\n');
     }
   }
@@ -801,10 +801,10 @@ function installMcpShrink(ctx) {
     note('    src/hooks/README.md to your Claude Code MCP config manually.');
     return { kind: 'skip', why: 'manual config required' };
   }
-  const r = runSpawn('claude', ['mcp', 'add', 'caveman-shrink', '--', 'npx', '-y', MCP_SHRINK_PKG], null, opts.dryRun);
+  const r = runSpawn('claude', ['mcp', 'add', 'injector-skills-shrink', '--', 'npx', '-y', MCP_SHRINK_PKG], null, opts.dryRun);
   if ((r.status || 0) === 0) {
     note('    registered. Wrap an upstream by editing the mcpServers entry — see:');
-    note(`    https://github.com/${REPO}/tree/main/src/mcp-servers/caveman-shrink`);
+    note(`    https://github.com/${REPO}/tree/main/src/mcp-servers/injector-skills-shrink`);
     return { kind: 'ok' };
   }
   return { kind: 'fail', why: 'claude mcp add failed' };
@@ -813,7 +813,7 @@ function installMcpShrink(ctx) {
 // ── Init writers (per-repo rule files) ────────────────────────────────────
 async function runInit(ctx) {
   const { note, warn, opts, repoRoot } = ctx;
-  const local = repoRoot && path.join(repoRoot, 'src/tools/caveman-init.js');
+  const local = repoRoot && path.join(repoRoot, 'src/tools/injector-skills-init.js');
   const args = [process.cwd()];
   if (opts.dryRun) args.push('--dry-run');
   if (opts.force)  args.push('--force');
@@ -827,7 +827,7 @@ async function runInit(ctx) {
     return true;
   }
   try {
-    const tmp = path.join(os.tmpdir(), `caveman-init-${process.pid}.js`);
+    const tmp = path.join(os.tmpdir(), `injector-skills-init-${process.pid}.js`);
     await downloadTo(INIT_SCRIPT_URL, tmp);
     const r = child_process.spawnSync(absoluteNodePath(), [tmp, ...args], { stdio: 'inherit' });
     try { fs.unlinkSync(tmp); } catch (_) {}
@@ -867,7 +867,7 @@ function downloadTo(url, dest) {
 // ── Uninstall ─────────────────────────────────────────────────────────────
 function uninstall(ctx) {
   const { say, note, warn, ok, opts, configDir } = ctx;
-  say('🪨 caveman uninstall');
+  say('🪨 injector-skills uninstall');
 
   if (opts.dryRun) note('  (dry run — nothing will be removed)');
 
@@ -877,15 +877,15 @@ function uninstall(ctx) {
   if (fs.existsSync(settingsPath)) {
     const settings = SETTINGS.readSettings(settingsPath);
     if (settings) {
-      const removed = SETTINGS.removeCavemanHooks(settings, 'caveman');
+      const removed = SETTINGS.removeCavemanHooks(settings, 'injector-skills');
       // Drop our statusline if it points at our script
       if (settings.statusLine) {
         const cmd = typeof settings.statusLine === 'string' ? settings.statusLine : (settings.statusLine.command || '');
-        if (cmd.includes('caveman-statusline')) delete settings.statusLine;
+        if (cmd.includes('injector-skills-statusline')) delete settings.statusLine;
       }
       SETTINGS.validateHookFields(settings);
       if (!opts.dryRun) SETTINGS.writeSettings(settingsPath, settings);
-      ok(`  removed ${removed} caveman hook entr${removed === 1 ? 'y' : 'ies'} from settings.json`);
+      ok(`  removed ${removed} injector-skills hook entr${removed === 1 ? 'y' : 'ies'} from settings.json`);
     }
   }
 
@@ -900,30 +900,30 @@ function uninstall(ctx) {
   }
 
   // Plugin uninstall on Claude. Probe `plugin list` first so a re-run on a
-  // machine where caveman was never installed (or was already removed) doesn't
+  // machine where injector-skills was never installed (or was already removed) doesn't
   // print "Plugin not installed" stderr noise.
   if (hasCmd('claude')) {
     const probe = captureSpawn('claude', ['plugin', 'list']);
-    if (probe.status === 0 && /caveman/i.test(probe.stdout || '')) {
-      const r = runSpawn('claude', ['plugin', 'uninstall', 'caveman@caveman'], null, opts.dryRun);
+    if (probe.status === 0 && /injector-skills/i.test(probe.stdout || '')) {
+      const r = runSpawn('claude', ['plugin', 'uninstall', 'injector-skills@injector-skills'], null, opts.dryRun);
       if ((r.status || 0) === 0) ok('  removed claude plugin');
     } else {
       note('  claude plugin not installed — skipping');
     }
 
-    // caveman-shrink MCP — only run if `claude mcp` subcommand exists. Tolerate
+    // injector-skills-shrink MCP — only run if `claude mcp` subcommand exists. Tolerate
     // non-zero exit (server may have never been registered).
     const mcpHelp = captureSpawn('claude', ['mcp', '--help']);
     if (mcpHelp.status === 0) {
-      runSpawn('claude', ['mcp', 'remove', 'caveman-shrink'], null, opts.dryRun);
+      runSpawn('claude', ['mcp', 'remove', 'injector-skills-shrink'], null, opts.dryRun);
     }
   }
 
   // Gemini extension. Same idempotency probe as claude.
   if (hasCmd('gemini')) {
     const probe = captureSpawn('gemini', ['extensions', 'list']);
-    if (probe.status === 0 && /caveman/i.test(probe.stdout || '')) {
-      runSpawn('gemini', ['extensions', 'uninstall', 'caveman'], null, opts.dryRun);
+    if (probe.status === 0 && /injector-skills/i.test(probe.stdout || '')) {
+      runSpawn('gemini', ['extensions', 'uninstall', 'injector-skills'], null, opts.dryRun);
     } else {
       note('  gemini extension not installed — skipping');
     }
@@ -932,7 +932,7 @@ function uninstall(ctx) {
   // opencode native install — strip plugin entry, MCP entry, and our files.
   // Probed by the existence of the plugin dir we own; if absent, skip silently.
   const ocDir = opencodeConfigDir();
-  const ocPluginDir = path.join(ocDir, 'plugins', 'caveman');
+  const ocPluginDir = path.join(ocDir, 'plugins', 'injector-skills');
   if (fs.existsSync(ocPluginDir)) {
     const ocJson = path.join(ocDir, 'opencode.json');
     if (fs.existsSync(ocJson)) {
@@ -942,12 +942,12 @@ function uninstall(ctx) {
           cfg.plugin = cfg.plugin.filter(p => p !== OPENCODE_PLUGIN_REL);
           if (cfg.plugin.length === 0) delete cfg.plugin;
         }
-        if (cfg.mcp && typeof cfg.mcp === 'object' && cfg.mcp['caveman-shrink']) {
-          delete cfg.mcp['caveman-shrink'];
+        if (cfg.mcp && typeof cfg.mcp === 'object' && cfg.mcp['injector-skills-shrink']) {
+          delete cfg.mcp['injector-skills-shrink'];
           if (Object.keys(cfg.mcp).length === 0) delete cfg.mcp;
         }
         if (!opts.dryRun) SETTINGS.writeSettings(ocJson, cfg);
-        ok(`  pruned caveman entries from ${ocJson}`);
+        ok(`  pruned injector-skills entries from ${ocJson}`);
       }
     }
     if (!opts.dryRun) { try { fs.rmSync(ocPluginDir, { recursive: true, force: true }); } catch (_) {} }
@@ -966,7 +966,7 @@ function uninstall(ctx) {
       const p = path.join(ocDir, 'skills', name);
       if (fs.existsSync(p) && !opts.dryRun) { try { fs.rmSync(p, { recursive: true, force: true }); } catch (_) {} }
     }
-    // AGENTS.md — strip the fenced caveman block (preserves user content
+    // AGENTS.md — strip the fenced injector-skills block (preserves user content
     // above and below). If the file is empty after the strip, remove it.
     // Falls back to legacy unfenced-sentinel handling for installs that
     // pre-date the marker fence.
@@ -987,37 +987,37 @@ function uninstall(ctx) {
             fs.writeFileSync(ocAgentsMd, next, { mode: 0o644 });
           }
         }
-        note(next === '' ? `  removed ${ocAgentsMd}` : `  stripped caveman block from ${ocAgentsMd}`);
+        note(next === '' ? `  removed ${ocAgentsMd}` : `  stripped injector-skills block from ${ocAgentsMd}`);
       } else if (body.includes(OPENCODE_AGENTS_MD_SENTINEL)) {
         // Legacy install (no marker fence). Remove only if the file is ours.
         if (body.trim() === '' || body.trim().startsWith(OPENCODE_AGENTS_MD_SENTINEL)) {
           if (!opts.dryRun) { try { fs.unlinkSync(ocAgentsMd); } catch (_) {} }
           note(`  removed ${ocAgentsMd}`);
         } else {
-          note(`  left ${ocAgentsMd} in place (legacy mixed content — strip caveman block manually)`);
+          note(`  left ${ocAgentsMd} in place (legacy mixed content — strip injector-skills block manually)`);
         }
       }
     }
     // opencode flag file
-    const ocFlag = path.join(ocDir, '.caveman-active');
+    const ocFlag = path.join(ocDir, '.injector-skills-active');
     if (fs.existsSync(ocFlag) && !opts.dryRun) { try { fs.unlinkSync(ocFlag); } catch (_) {} }
   }
 
   // OpenClaw native install — strip skill folder + SOUL.md marker block.
   // Probed by the skill folder we own; if absent, skip silently.
   const ocwWs = process.env.OPENCLAW_WORKSPACE || path.join(os.homedir(), '.openclaw', 'workspace');
-  if (fs.existsSync(path.join(ocwWs, 'skills', 'caveman')) || fs.existsSync(path.join(ocwWs, 'SOUL.md'))) {
+  if (fs.existsSync(path.join(ocwWs, 'skills', 'injector-skills')) || fs.existsSync(path.join(ocwWs, 'SOUL.md'))) {
     const log = {
       write: (s) => process.stdout.write(s),
       note: (s) => note(s),
       warn: (s) => warn(s),
     };
     const r = OPENCLAW.uninstallOpenclaw({ workspace: ocwWs, dryRun: opts.dryRun, log });
-    if (r.touched) ok('  pruned caveman entries from OpenClaw workspace');
+    if (r.touched) ok('  pruned injector-skills entries from OpenClaw workspace');
   }
 
   // Flag file
-  const flag = path.join(configDir, '.caveman-active');
+  const flag = path.join(configDir, '.injector-skills-active');
   if (fs.existsSync(flag) && !opts.dryRun) { try { fs.unlinkSync(flag); } catch (_) {} }
 
   process.stdout.write('\n');
@@ -1047,7 +1047,7 @@ async function promptForOnly(detected) {
 // ── --list ─────────────────────────────────────────────────────────────────
 function printList(noColor) {
   const c = makeChalk(noColor);
-  process.stdout.write(c.orange('🪨 caveman provider matrix') + '\n\n');
+  process.stdout.write(c.orange('🪨 injector-skills provider matrix') + '\n\n');
   process.stdout.write(`  ${pad('ID', 13)} ${pad('AGENT', 22)} INSTALL MECHANISM\n`);
   process.stdout.write(`  ${pad('--', 13)} ${pad('-----', 22)} -----------------\n`);
   for (const p of PROVIDERS) {
@@ -1063,10 +1063,10 @@ function pad(s, n) { s = String(s); return s + ' '.repeat(Math.max(0, n - s.leng
 
 // ── Help ───────────────────────────────────────────────────────────────────
 function printHelp() {
-  process.stdout.write(`caveman installer — detects your agents and installs caveman for each one.
+  process.stdout.write(`injector-skills installer — detects your agents and installs injector-skills for each one.
 
 USAGE
-  npx -y github:JuliusBrussee/caveman -- [flags]
+  npx -y github:JuliusBrussee/injector-skills -- [flags]
   node bin/install.js [flags]
   bash install.sh [flags]              # shim → npx
   pwsh install.ps1 [flags]             # shim → npx
@@ -1083,9 +1083,9 @@ FLAGS
                         + statusline badge. (Default ON.)
   --no-hooks            Skip the hooks installer.
   --with-init           Write per-repo IDE rule files into \$PWD.
-  --with-mcp-shrink     Claude Code: register caveman-shrink MCP proxy. (Default ON.)
+  --with-mcp-shrink     Claude Code: register injector-skills-shrink MCP proxy. (Default ON.)
   --no-mcp-shrink       Skip MCP shrink.
-  --uninstall, -u       Remove caveman from this machine.
+  --uninstall, -u       Remove injector-skills from this machine.
   --config-dir <path>   Claude Code config dir for hook files + settings.json.
                         Default: \$CLAUDE_CONFIG_DIR or ~/.claude. Does NOT
                         scope \`claude plugin install\`, \`gemini extensions
@@ -1097,10 +1097,10 @@ FLAGS
   -h, --help            Show this help.
 
 EXAMPLES
-  npx -y github:JuliusBrussee/caveman                        # default install
-  npx -y github:JuliusBrussee/caveman -- --all               # all the trimmings
-  npx -y github:JuliusBrussee/caveman -- --only claude --no-mcp-shrink
-  npx -y github:JuliusBrussee/caveman -- --uninstall
+  npx -y github:JuliusBrussee/injector-skills                        # default install
+  npx -y github:JuliusBrussee/injector-skills -- --all               # all the trimmings
+  npx -y github:JuliusBrussee/injector-skills -- --only claude --no-mcp-shrink
+  npx -y github:JuliusBrussee/injector-skills -- --uninstall
 
   Issues: https://github.com/${REPO}/issues
 `);
@@ -1130,7 +1130,7 @@ async function main() {
 
   if (opts.uninstall) { uninstall(ctx); return 0; }
 
-  ctx.say('🪨 caveman installer');
+  ctx.say('🪨 injector-skills installer');
   ctx.note(`  ${REPO}`);
   if (opts.dryRun) ctx.note('  (dry run — nothing will be written)');
   process.stdout.write('\n');
@@ -1181,8 +1181,8 @@ async function main() {
   // Per-repo init
   if (opts.withInit) {
     ctx.say(`→ writing per-repo IDE rule files into ${process.cwd()} (--with-init)`);
-    if (await runInit(ctx)) ctx.results.installed.push(`caveman-init (${process.cwd()})`);
-    else                    ctx.results.failed.push(['caveman-init', 'src/tools/caveman-init.js failed']);
+    if (await runInit(ctx)) ctx.results.installed.push(`injector-skills-init (${process.cwd()})`);
+    else                    ctx.results.failed.push(['injector-skills-init', 'src/tools/injector-skills-init.js failed']);
     process.stdout.write('\n');
   } else if (ctx.results.installed.length || ctx.results.skipped.length) {
     ctx.note('  tip: re-run inside a repo with --all (or --with-init) to also write per-repo');
@@ -1209,7 +1209,7 @@ async function main() {
     process.stdout.write('  or pass --only <agent> to force a specific target.\n');
   }
   process.stdout.write('\n');
-  ctx.note("  start any session and say 'caveman mode', or run /caveman in Claude Code");
+  ctx.note("  start any session and say 'injector-skills mode', or run /injector-skills in Claude Code");
   ctx.note(`  uninstall: npx -y github:${REPO} -- --uninstall`);
 
   // Exit code: nonzero only if every detected agent failed

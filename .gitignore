@@ -3,13 +3,13 @@ __pycache__/
 *.pyc
 .venv/
 .env.local
-caveman-compress.md
+injector-skills-compress.md
 **/.DS_Store
 .claude/worktrees/
 evals/snapshots/*.html
 evals/snapshots/*.png
-context/refs/research-brief-caveman-code-efficiency.md
+context/refs/research-brief-injector-skills-code-efficiency.md
 
 # Build artifacts
 dist/*
-!dist/caveman.skill
+!dist/injector-skills.skill

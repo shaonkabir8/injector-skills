@@ -1,21 +1,21 @@
 #!/usr/bin/env node
-// caveman init — drop the always-on caveman activation rule into a target
+// injector-skills init — drop the always-on injector-skills activation rule into a target
 // repo for every IDE agent we support. Idempotent. Safe to re-run.
 //
 // Usage:
-//   node src/tools/caveman-init.js [target-dir] [--dry-run] [--force] [--only <agent>]
-//   curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/src/tools/caveman-init.js | node - [args]
+//   node src/tools/injector-skills-init.js [target-dir] [--dry-run] [--force] [--only <agent>]
+//   curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/src/tools/injector-skills-init.js | node - [args]
 //
 // Without args, runs in cwd. Generates the rule files for Cursor, Windsurf,
 // Cline, Copilot, and AGENTS.md. Does NOT modify CLAUDE.md or compress
-// existing memory files — that's the job of `/caveman:compress`.
+// existing memory files — that's the job of `/injector-skills:compress`.
 
 const fs = require('fs');
 const path = require('path');
 
 // Embedded so the tool works standalone (npx-style) without the src/rules/ dir.
-// Mirrors src/rules/caveman-activate.md verbatim — keep these in sync.
-const RULE_BODY = `Respond terse like smart caveman. All technical substance stay. Only fluff die.
+// Mirrors src/rules/injector-skills-activate.md verbatim — keep these in sync.
+const RULE_BODY = `Respond terse like smart injector-skills. All technical substance stay. Only fluff die.
 
 Rules:
 - Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging
@@ -24,19 +24,19 @@ Rules:
 - Not: "Sure! I'd be happy to help you with that."
 - Yes: "Bug in auth middleware. Fix:"
 
-Switch level: /caveman lite|full|ultra|wenyan
-Stop: "stop caveman" or "normal mode"
+Switch level: /injector-skills lite|full|ultra|wenyan
+Stop: "stop injector-skills" or "normal mode"
 
-Auto-Clarity: drop caveman for security warnings, irreversible actions, user confused. Resume after.
+Auto-Clarity: drop injector-skills for security warnings, irreversible actions, user confused. Resume after.
 
 Boundaries: code/commits/PRs written normal.
 `;
 
-const SENTINEL = 'Respond terse like smart caveman';
+const SENTINEL = 'Respond terse like smart injector-skills';
 
 // OpenClaw is a global workspace tool (not per-repo) and needs two write
 // targets — a skill folder + a SOUL.md bootstrap block. The shared helper
-// lives at bin/lib/openclaw.js; we require it lazily so caveman-init.js
+// lives at bin/lib/openclaw.js; we require it lazily so injector-skills-init.js
 // keeps working when run standalone (curl|node) without the helper on disk.
 function loadOpenclawHelper() {
   try {
@@ -45,13 +45,13 @@ function loadOpenclawHelper() {
 }
 
 const AGENTS = [
-  { id: 'cursor',   file: '.cursor/rules/caveman.mdc',
+  { id: 'cursor',   file: '.cursor/rules/injector-skills.mdc',
     frontmatter: '---\ndescription: "Caveman mode — terse communication, ~75% fewer tokens, full technical accuracy"\nalwaysApply: true\n---\n\n',
     mode: 'replace' },
-  { id: 'windsurf', file: '.windsurf/rules/caveman.md',
+  { id: 'windsurf', file: '.windsurf/rules/injector-skills.md',
     frontmatter: '---\ntrigger: always_on\n---\n\n',
     mode: 'replace' },
-  { id: 'cline',    file: '.clinerules/caveman.md',
+  { id: 'cline',    file: '.clinerules/injector-skills.md',
     frontmatter: '',
     mode: 'replace' },
   { id: 'copilot',  file: '.github/copilot-instructions.md',
@@ -66,14 +66,14 @@ const AGENTS = [
   // OpenClaw — global workspace install, not per-repo. The `installer`
   // callback escape hatch bypasses the file/frontmatter/mode triple and
   // hands off to the shared helper. `description` is what `--help` prints.
-  { id: 'openclaw', description: '~/.openclaw/workspace/{skills/caveman/, SOUL.md}',
+  { id: 'openclaw', description: '~/.openclaw/workspace/{skills/injector-skills/, SOUL.md}',
     installer: 'openclaw' },
 ];
 
 function loadRuleBody() {
   // Prefer the in-repo source-of-truth when available.
   try {
-    const local = path.join(__dirname, '..', 'rules', 'caveman-activate.md');
+    const local = path.join(__dirname, '..', 'rules', 'injector-skills-activate.md');
     if (fs.existsSync(local)) return fs.readFileSync(local, 'utf8').trimEnd() + '\n';
   } catch (e) {}
   return RULE_BODY;
@@ -123,7 +123,7 @@ function processOpenclaw(opts) {
     return {
       status: 'unsupported-standalone',
       label: 'x',
-      detail: '~/.openclaw/workspace (helper unavailable in standalone curl|node mode — use `npx -y github:JuliusBrussee/caveman -- --only openclaw`)',
+      detail: '~/.openclaw/workspace (helper unavailable in standalone curl|node mode — use `npx -y github:JuliusBrussee/injector-skills -- --only openclaw`)',
     };
   }
   const repoRoot = path.resolve(__dirname, '..', '..');
@@ -160,9 +160,9 @@ function parseArgs(argv) {
 }
 
 function help() {
-  console.log(`caveman init — drop always-on caveman rule into a target repo
+  console.log(`injector-skills init — drop always-on injector-skills rule into a target repo
 
-Usage: caveman-init.js [target-dir] [--dry-run] [--force] [--only <agent>]
+Usage: injector-skills-init.js [target-dir] [--dry-run] [--force] [--only <agent>]
 
 Defaults to current working directory. Idempotent — safe to re-run.
 
@@ -180,7 +180,7 @@ function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (opts.help) { help(); return; }
 
-  console.log(`🪨 caveman init — ${opts.target}${opts.dryRun ? ' (dry run)' : ''}\n`);
+  console.log(`🪨 injector-skills init — ${opts.target}${opts.dryRun ? ' (dry run)' : ''}\n`);
 
   const ruleBody = loadRuleBody();
   const counts = { added: 0, appended: 0, overwritten: 0, skipped: 0 };

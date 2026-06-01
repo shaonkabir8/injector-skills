@@ -1,4 +1,4 @@
-# caveman-review
+# injector-skills-review
 
 One-line PR comments. Location, problem, fix. No throat-clearing.
 
@@ -13,7 +13,7 @@ Output only — does not approve, request changes, or run linters.
 ## How to invoke
 
 ```
-/caveman-review
+/injector-skills-review
 ```
 
 Also triggers on "review this PR", "code review", "review the diff".

@@ -1,10 +1,10 @@
-# Contributing to caveman
+# Contributing to injector-skills
 
 Thanks for considering a contribution. Caveman is a multi-agent skill that
-makes 30+ AI coding agents talk in compressed caveman-style prose. Most
+makes 30+ AI coding agents talk in compressed injector-skills-style prose. Most
 contributions fall into one of three buckets:
 
-1. **Editing skill prose** — change how caveman speaks, what intensity levels do, what slash commands trigger.
+1. **Editing skill prose** — change how injector-skills speaks, what intensity levels do, what slash commands trigger.
 2. **Adding a new agent** — wire a fresh editor/CLI/IDE into the unified installer.
 3. **Fixing the hooks or installer** — Claude Code hooks, the Node installer, the per-repo init script.
 
@@ -14,15 +14,15 @@ Caveman like simple. Small focused PR > big rewrite.
 
 ## Quick orientation
 
-The repo distributes one skill (caveman) plus a handful of sub-skills
-(caveman-commit, caveman-review, caveman-compress, cavecrew-*) to many
+The repo distributes one skill (injector-skills) plus a handful of sub-skills
+(injector-skills-commit, injector-skills-review, injector-skills-compress, cavecrew-*) to many
 agents through different distribution mechanisms (Claude Code plugin, Codex
 plugin, Gemini extension, Cursor/Windsurf/Cline rule files, `npx skills` for
 the long tail). A single Node installer at `bin/install.js` detects which
 agents are on the user's machine and installs the right thing for each.
 
 Sources of truth live at the **top level** of the repo. Agent-specific
-copies live under `plugins/caveman/` and similar mirror dirs — those are
+copies live under `plugins/injector-skills/` and similar mirror dirs — those are
 **rebuilt by CI** and edits there are reverted.
 
 ---
@@ -31,19 +31,19 @@ copies live under `plugins/caveman/` and similar mirror dirs — those are
 
 | I want to change... | Edit this file |
 |---|---|
-| Caveman behavior (intensity levels, voice, rules) | `skills/caveman/SKILL.md` |
-| Caveman commit-message format | `skills/caveman-commit/SKILL.md` |
-| Caveman code-review format | `skills/caveman-review/SKILL.md` |
-| Caveman compress logic | `skills/caveman-compress/SKILL.md` and `skills/caveman-compress/scripts/` |
-| Caveman quick-reference card | `skills/caveman-help/SKILL.md` |
+| Caveman behavior (intensity levels, voice, rules) | `skills/injector-skills/SKILL.md` |
+| Caveman commit-message format | `skills/injector-skills-commit/SKILL.md` |
+| Caveman code-review format | `skills/injector-skills-review/SKILL.md` |
+| Caveman compress logic | `skills/injector-skills-compress/SKILL.md` and `skills/injector-skills-compress/scripts/` |
+| Caveman quick-reference card | `skills/injector-skills-help/SKILL.md` |
 | Cavecrew decision guide (when to delegate to subagents) | `skills/cavecrew/SKILL.md` |
 | cavecrew subagent definitions | `agents/cavecrew-investigator.md`, `agents/cavecrew-builder.md`, `agents/cavecrew-reviewer.md` |
-| Auto-activation rule body (Cursor/Windsurf/Cline/Copilot) | `src/rules/caveman-activate.md` |
+| Auto-activation rule body (Cursor/Windsurf/Cline/Copilot) | `src/rules/injector-skills-activate.md` |
 | Add support for a new agent | `bin/install.js` (PROVIDERS array) |
-| Per-repo init script (drops rule files into a user's repo) | `src/tools/caveman-init.js` |
-| Claude Code hooks | `src/hooks/caveman-activate.js`, `src/hooks/caveman-mode-tracker.js`, `src/hooks/caveman-config.js`, `src/hooks/caveman-statusline.sh`, `src/hooks/caveman-statusline.ps1` |
+| Per-repo init script (drops rule files into a user's repo) | `src/tools/injector-skills-init.js` |
+| Claude Code hooks | `src/hooks/injector-skills-activate.js`, `src/hooks/injector-skills-mode-tracker.js`, `src/hooks/injector-skills-config.js`, `src/hooks/injector-skills-statusline.sh`, `src/hooks/injector-skills-statusline.ps1` |
 | Settings.json read/write helpers | `bin/lib/settings.js` |
-| MCP shrink server | `src/mcp-servers/caveman-shrink/` |
+| MCP shrink server | `src/mcp-servers/injector-skills-shrink/` |
 
 That's it. Every other markdown file with `SKILL.md` in the path is a copy.
 
@@ -57,13 +57,13 @@ on every push to `main`.
 
 | Path | Rebuilt from |
 |------|--------------|
-| `plugins/caveman/skills/caveman/SKILL.md` | `skills/caveman/SKILL.md` |
-| `plugins/caveman/skills/caveman-compress/{SKILL.md, scripts/}` | `skills/caveman-compress/{SKILL.md, scripts/}` |
-| `plugins/caveman/skills/cavecrew/SKILL.md` | `skills/cavecrew/SKILL.md` |
-| `plugins/caveman/agents/cavecrew-*.md` | `agents/cavecrew-*.md` |
-| `dist/caveman.skill` | ZIP of `skills/caveman/` (gitignored; rebuilt by CI on each push to `main`) |
+| `plugins/injector-skills/skills/injector-skills/SKILL.md` | `skills/injector-skills/SKILL.md` |
+| `plugins/injector-skills/skills/injector-skills-compress/{SKILL.md, scripts/}` | `skills/injector-skills-compress/{SKILL.md, scripts/}` |
+| `plugins/injector-skills/skills/cavecrew/SKILL.md` | `skills/cavecrew/SKILL.md` |
+| `plugins/injector-skills/agents/cavecrew-*.md` | `agents/cavecrew-*.md` |
+| `dist/injector-skills.skill` | ZIP of `skills/injector-skills/` (gitignored; rebuilt by CI on each push to `main`) |
 
-`caveman-commit`, `caveman-review`, `caveman-help`, and `caveman-stats` are **not** mirrored under `plugins/caveman/skills/` by CI. Claude Code reaches them through the standalone hook + skill install path and `npx skills` carries them to other agents. If you see `plugins/caveman/skills/caveman-stats/` checked in, treat it as a legacy hand-committed copy — the workflow in `.github/workflows/sync-skill.yml` does not touch it.
+`injector-skills-commit`, `injector-skills-review`, `injector-skills-help`, and `injector-skills-stats` are **not** mirrored under `plugins/injector-skills/skills/` by CI. Claude Code reaches them through the standalone hook + skill install path and `npx skills` carries them to other agents. If you see `plugins/injector-skills/skills/injector-skills-stats/` checked in, treat it as a legacy hand-committed copy — the workflow in `.github/workflows/sync-skill.yml` does not touch it.
 
 When in doubt: if the file lives under `plugins/`, `dist/`, or any agent
 dotdir mirror, it's a build artifact. Edit the top-level source instead.
@@ -108,7 +108,7 @@ merging.
    ```
 2. Create `skills/<name>/README.md` — human-facing summary, install hint, example.
 3. Add `skills/<name>/scripts/` if the skill ships helpers (Python or Node).
-4. If the skill should be in the Claude Code plugin, add a sync step to `.github/workflows/sync-skill.yml` so CI mirrors it into `plugins/caveman/skills/<name>/`.
+4. If the skill should be in the Claude Code plugin, add a sync step to `.github/workflows/sync-skill.yml` so CI mirrors it into `plugins/injector-skills/skills/<name>/`.
 5. If it's user-invocable as a slash command, add a row to the slash-command table in `README.md` and `INSTALL.md`.
 6. Add an eval prompt to `evals/prompts/en.txt` if you want the eval harness to score it.
 
@@ -124,7 +124,7 @@ npm test
 python3 -m unittest tests.test_compress_safety
 
 # Per-repo init tests
-node tests/test_caveman_init.js
+node tests/test_injector-skills_init.js
 
 # Flag-file symlink-safety tests
 node tests/test_symlink_flag.js
@@ -159,11 +159,11 @@ real runs — never invent or round.
 
 ## Pull-request guidelines
 
-- **Conventional Commits** for the commit subject. See `skills/caveman-commit/SKILL.md` for the format we use here.
+- **Conventional Commits** for the commit subject. See `skills/injector-skills-commit/SKILL.md` for the format we use here.
 - **One concern per PR.** A README copy-edit and an installer fix go in separate PRs.
 - **Update `package.json` `files`** if you add a new top-level directory the installer needs to ship to npm. Files outside that array don't get published.
 - **Show before/after** for prose changes to any `SKILL.md`. One sentence on why the new wording is better.
-- **Mention the CI sync.** If you edited a source-of-truth file, note it: "CI will resync `plugins/caveman/skills/...` on merge."
+- **Mention the CI sync.** If you edited a source-of-truth file, note it: "CI will resync `plugins/injector-skills/skills/...` on merge."
 
 PR descriptions don't need to be long. Caveman style fine. Just say what change, why.
 
@@ -173,10 +173,10 @@ PR descriptions don't need to be long. Caveman style fine. Just say what change,
 
 A handful of invariants that have bitten us before. Keep them.
 
-- **Hooks must silent-fail on filesystem errors.** A `try/catch` that swallows the error is correct here. A hook that throws blocks Claude Code session start — that's user-facing breakage. See existing patterns in `src/hooks/caveman-activate.js`.
+- **Hooks must silent-fail on filesystem errors.** A `try/catch` that swallows the error is correct here. A hook that throws blocks Claude Code session start — that's user-facing breakage. See existing patterns in `src/hooks/injector-skills-activate.js`.
 - **Settings.json reads and writes go through `bin/lib/settings.js`.** It tolerates JSONC comments. Direct `JSON.parse` on a user's `settings.json` will crash on a single `// comment`.
 - **Validate hook entries before writing.** Use `validateHookFields()` in `bin/lib/settings.js`. Claude Code's Zod schema silently discards the **entire** `settings.json` on a single bad hook entry — one malformed write poisons the user's whole config.
-- **Symlink-safe flag writes via `safeWriteFlag()`** in `src/hooks/caveman-config.js`. The flag file lives at a predictable path under `$CLAUDE_CONFIG_DIR/`; without `O_NOFOLLOW` and a parent-symlink check, a local attacker can clobber any file the user can write.
+- **Symlink-safe flag writes via `safeWriteFlag()`** in `src/hooks/injector-skills-config.js`. The flag file lives at a predictable path under `$CLAUDE_CONFIG_DIR/`; without `O_NOFOLLOW` and a parent-symlink check, a local attacker can clobber any file the user can write.
 - **Honor `CLAUDE_CONFIG_DIR`.** Hooks, the installer, and the statusline scripts must respect it — never hardcode `~/.claude`.
 - **`install.sh` and `install.ps1` at the repo root are 30-line shims** that delegate to `bin/install.js`. Don't re-add per-OS install logic to them. Quoting bugs that way lie.
 
@@ -188,5 +188,5 @@ See [issues labeled `good first issue`](../../issues?q=label%3A%22good+first+iss
 for starter tasks. Or grep `TODO` / `FIXME` in `src/hooks/`, `bin/`, `src/tools/` —
 each one is a real lead.
 
-Caveman like contribution. You bring rock, caveman put rock in pile. Pile
+Caveman like contribution. You bring rock, injector-skills put rock in pile. Pile
 get bigger. Brain still big.

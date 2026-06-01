@@ -1,10 +1,10 @@
 # cavecrew
 
-Decision guide. When to delegate to caveman subagents instead of doing the work inline.
+Decision guide. When to delegate to injector-skills subagents instead of doing the work inline.
 
 ## What it does
 
-Tells the main thread when to spawn a caveman-style subagent versus the vanilla equivalent. The win: subagent tool-results inject back into main context verbatim, and caveman output is roughly 1/3 the size of vanilla prose. Across 20 delegations in one session, that is the difference between context exhaustion and finishing the task.
+Tells the main thread when to spawn a injector-skills-style subagent versus the vanilla equivalent. The win: subagent tool-results inject back into main context verbatim, and injector-skills output is roughly 1/3 the size of vanilla prose. Across 20 delegations in one session, that is the difference between context exhaustion and finishing the task.
 
 Three subagents:
 

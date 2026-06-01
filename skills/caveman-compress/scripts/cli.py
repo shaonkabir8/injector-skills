@@ -3,7 +3,7 @@
 Caveman Compress CLI
 
 Usage:
-    caveman <filepath>
+    injector-skills <filepath>
 """
 
 import sys
@@ -26,7 +26,7 @@ from .detect import detect_file_type, should_compress
 
 
 def print_usage():
-    print("Usage: caveman <filepath>")
+    print("Usage: injector-skills <filepath>")
 
 
 def main():
@@ -57,7 +57,7 @@ def main():
         print("Skipping: file is not natural language (code/config)")
         sys.exit(0)
 
-    print("Starting caveman compression...\n")
+    print("Starting injector-skills compression...\n")
 
     try:
         success = compress_file(filepath)

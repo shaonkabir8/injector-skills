@@ -1,17 +1,17 @@
 ---
 name: cavecrew
 description: >
-  Decision guide for delegating to caveman-style subagents. Tells the main
+  Decision guide for delegating to injector-skills-style subagents. Tells the main
   thread WHEN to spawn `cavecrew-investigator` (locate code), `cavecrew-builder`
   (1-2 file edit), or `cavecrew-reviewer` (diff review) instead of doing the
-  work inline or using vanilla `Explore`. Subagent output is caveman-compressed
+  work inline or using vanilla `Explore`. Subagent output is injector-skills-compressed
   so the tool-result injected back into main context is ~60% smaller — main
   context lasts longer across long sessions.
   Trigger: "delegate to subagent", "use cavecrew", "spawn investigator/builder/reviewer",
   "save context", "compressed agent output".
 ---
 
-Cavecrew = three subagent presets that emit caveman output. Same job as Anthropic defaults (`Explore`, edit-style agents, reviewer); difference is the tool-result they return is compressed, so main context shrinks per delegation.
+Cavecrew = three subagent presets that emit injector-skills output. Same job as Anthropic defaults (`Explore`, edit-style agents, reviewer); difference is the tool-result they return is compressed, so main context shrinks per delegation.
 
 ## When to use cavecrew vs alternatives
 
@@ -79,4 +79,4 @@ Skip investigator. Hand exact path:line to `cavecrew-builder` directly.
 
 ## Auto-clarity (inherited)
 
-Subagents drop caveman → normal English for security warnings, irreversible-action confirmations, and any output where fragment ambiguity could be misread. Resume caveman after.
+Subagents drop injector-skills → normal English for security warnings, irreversible-action confirmations, and any output where fragment ambiguity could be misread. Resume injector-skills after.

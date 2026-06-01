@@ -55,10 +55,10 @@ def main():
         print_table([benchmark_pair(orig, comp)])
         return
 
-    # Glob mode: repo_root/tests/caveman-compress/
-    # __file__ lives at <repo_root>/skills/caveman-compress/scripts/benchmark.py
-    # Walk up four dirs: scripts → caveman-compress → skills → repo_root.
-    tests_dir = Path(__file__).resolve().parents[3] / "tests" / "caveman-compress"
+    # Glob mode: repo_root/tests/injector-skills-compress/
+    # __file__ lives at <repo_root>/skills/injector-skills-compress/scripts/benchmark.py
+    # Walk up four dirs: scripts → injector-skills-compress → skills → repo_root.
+    tests_dir = Path(__file__).resolve().parents[3] / "tests" / "injector-skills-compress"
     if not tests_dir.exists():
         print(f"❌ Tests dir not found: {tests_dir}")
         sys.exit(1)

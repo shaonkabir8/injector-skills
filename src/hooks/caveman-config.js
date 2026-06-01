@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// caveman — shared configuration resolver
+// injector-skills — shared configuration resolver
 //
 // Resolution order for default mode:
 //   1. CAVEMAN_DEFAULT_MODE environment variable
 //   2. Config file defaultMode field:
-//      - $XDG_CONFIG_HOME/caveman/config.json (any platform, if set)
-//      - ~/.config/caveman/config.json (macOS / Linux fallback)
-//      - %APPDATA%\caveman\config.json (Windows fallback)
+//      - $XDG_CONFIG_HOME/injector-skills/config.json (any platform, if set)
+//      - ~/.config/injector-skills/config.json (macOS / Linux fallback)
+//      - %APPDATA%\injector-skills\config.json (Windows fallback)
 //   3. 'full'
 
 const fs = require('fs');
@@ -21,15 +21,15 @@ const VALID_MODES = [
 
 function getConfigDir() {
   if (process.env.XDG_CONFIG_HOME) {
-    return path.join(process.env.XDG_CONFIG_HOME, 'caveman');
+    return path.join(process.env.XDG_CONFIG_HOME, 'injector-skills');
   }
   if (process.platform === 'win32') {
     return path.join(
       process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'),
-      'caveman'
+      'injector-skills'
     );
   }
-  return path.join(os.homedir(), '.config', 'caveman');
+  return path.join(os.homedir(), '.config', 'injector-skills');
 }
 
 function getConfigPath() {
@@ -61,7 +61,7 @@ function getDefaultMode() {
 // Symlink-safe flag file write.
 // Uses O_NOFOLLOW where available, writes atomically via temp + rename with
 // 0600 permissions. Protects against local attackers replacing the predictable
-// flag path (~/.claude/.caveman-active) with a symlink to clobber other files.
+// flag path (~/.claude/.injector-skills-active) with a symlink to clobber other files.
 //
 // When the parent directory is itself a symlink (legitimate pattern: ~/.claude
 // symlinked to another drive or shared config dir), resolves through to the
@@ -94,12 +94,12 @@ function safeWriteFlag(flagPath, content) {
         realFlagDir = fs.realpathSync(flagDir);
         const realStat = fs.statSync(realFlagDir);
         if (!realStat.isDirectory()) {
-          if (debug) process.stderr.write(`[caveman] safeWriteFlag: symlink target ${realFlagDir} is not a directory\n`);
+          if (debug) process.stderr.write(`[injector-skills] safeWriteFlag: symlink target ${realFlagDir} is not a directory\n`);
           return;
         }
         if (typeof process.getuid === 'function') {
           if (realStat.uid !== process.getuid()) {
-            if (debug) process.stderr.write(`[caveman] safeWriteFlag: symlink target ${realFlagDir} owned by uid ${realStat.uid}, not current user ${process.getuid()}\n`);
+            if (debug) process.stderr.write(`[injector-skills] safeWriteFlag: symlink target ${realFlagDir} owned by uid ${realStat.uid}, not current user ${process.getuid()}\n`);
             return;
           }
         } else {
@@ -108,7 +108,7 @@ function safeWriteFlag(flagPath, content) {
           const normalizedHome = path.resolve(home);
           if (!normalizedReal.toLowerCase().startsWith(normalizedHome.toLowerCase() + path.sep) &&
               normalizedReal.toLowerCase() !== normalizedHome.toLowerCase()) {
-            if (debug) process.stderr.write(`[caveman] safeWriteFlag: symlink target ${normalizedReal} is outside home directory ${normalizedHome}\n`);
+            if (debug) process.stderr.write(`[injector-skills] safeWriteFlag: symlink target ${normalizedReal} is outside home directory ${normalizedHome}\n`);
             return;
           }
         }
@@ -127,7 +127,7 @@ function safeWriteFlag(flagPath, content) {
       if (e.code !== 'ENOENT') return;
     }
 
-    const tempPath = path.join(realFlagDir, `.caveman-active.${process.pid}.${Date.now()}`);
+    const tempPath = path.join(realFlagDir, `.injector-skills-active.${process.pid}.${Date.now()}`);
     const O_NOFOLLOW = typeof fs.constants.O_NOFOLLOW === 'number' ? fs.constants.O_NOFOLLOW : 0;
     const flags = fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | O_NOFOLLOW;
     let fd;
@@ -192,7 +192,7 @@ function readFlag(flagPath) {
 // Symlink-safe append. Same parent-dir + symlink-target rules as safeWriteFlag,
 // but opens with O_APPEND so concurrent writers from different sessions don't
 // clobber each other. Used for the lifetime stats log
-// ($CLAUDE_CONFIG_DIR/.caveman-history.jsonl).
+// ($CLAUDE_CONFIG_DIR/.injector-skills-history.jsonl).
 //
 // Silent-fails on any filesystem error.
 function appendFlag(filePath, line) {
@@ -210,7 +210,7 @@ function appendFlag(filePath, line) {
         if (!realStat.isDirectory()) return;
         if (typeof process.getuid === 'function') {
           if (realStat.uid !== process.getuid()) {
-            if (debug) process.stderr.write(`[caveman] appendFlag: symlink target ${realDir} owned by uid ${realStat.uid}\n`);
+            if (debug) process.stderr.write(`[injector-skills] appendFlag: symlink target ${realDir} owned by uid ${realStat.uid}\n`);
             return;
           }
         } else {

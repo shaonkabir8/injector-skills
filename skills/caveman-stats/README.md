@@ -1,17 +1,17 @@
-# caveman-stats
+# injector-skills-stats
 
 Real session token receipts. No AI estimation.
 
 ## What it does
 
-Reads the current Claude Code session log directly and reports actual input/output token usage plus estimated savings versus a non-caveman baseline. Numbers come from the JSONL session log on disk — the model itself does not compute or estimate them. Output is injected by the `caveman-mode-tracker` hook, which intercepts `/caveman-stats` and returns the formatted stats as a blocked-decision reason.
+Reads the current Claude Code session log directly and reports actual input/output token usage plus estimated savings versus a non-injector-skills baseline. Numbers come from the JSONL session log on disk — the model itself does not compute or estimate them. Output is injected by the `injector-skills-mode-tracker` hook, which intercepts `/injector-skills-stats` and returns the formatted stats as a blocked-decision reason.
 
 Each run also writes a lifetime-savings suffix file used by the statusline badge (`⛏ 12.4k`).
 
 ## How to invoke
 
 ```
-/caveman-stats
+/injector-skills-stats
 ```
 
 ## Example output
@@ -19,8 +19,8 @@ Each run also writes a lifetime-savings suffix file used by the statusline badge
 ```
 Session: 47 turns
 Input:   12,304 tokens
-Output:   3,891 tokens (caveman)
-Baseline: 11,247 tokens (estimated without caveman)
+Output:   3,891 tokens (injector-skills)
+Baseline: 11,247 tokens (estimated without injector-skills)
 Saved:    7,356 tokens (~65%)
 ```
 

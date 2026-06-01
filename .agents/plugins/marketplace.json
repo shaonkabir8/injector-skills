@@ -1,14 +1,14 @@
 {
-  "name": "caveman-repo",
+  "name": "injector-skills-repo",
   "interface": {
     "displayName": "Caveman Repo"
   },
   "plugins": [
     {
-      "name": "caveman",
+      "name": "injector-skills",
       "source": {
         "source": "local",
-        "path": "./plugins/caveman"
+        "path": "./plugins/injector-skills"
       },
       "policy": {
         "installation": "AVAILABLE",

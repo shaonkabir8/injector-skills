@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-// caveman-stats — read the active Claude Code session log, print real token
+// injector-skills-stats — read the active Claude Code session log, print real token
 // usage plus an estimated savings figure from the benchmark in benchmarks/.
 //
-// Run directly:    node hooks/caveman-stats.js
-// Inside Claude:   /caveman-stats triggers this via the UserPromptSubmit hook.
+// Run directly:    node hooks/injector-skills-stats.js
+// Inside Claude:   /injector-skills-stats triggers this via the UserPromptSubmit hook.
 // Hook integration passes --session-file <transcript_path> so we always read
 // the active session, not whichever JSONL was modified most recently.
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { readFlag, appendFlag, readHistory, safeWriteFlag } = require('./caveman-config');
+const { readFlag, appendFlag, readHistory, safeWriteFlag } = require('./injector-skills-config');
 
 // Mean per-task savings from benchmarks/results/*.json (avg_savings: 65 across
 // 10 tasks, sonnet-4-20250514). Only 'full' has measured data; lite / ultra /
@@ -92,7 +92,7 @@ function parseSession(filePath) {
   return { outputTokens, cacheReadTokens, turns, model };
 }
 
-// Detect *.original.md / *.md pairs left behind by caveman-compress. The
+// Detect *.original.md / *.md pairs left behind by injector-skills-compress. The
 // presence of a *.original.md backup means the *.md sibling is a compressed
 // memory file — every session start reads the compressed version, so the
 // delta is per-session input-token savings (passive). Returns a summary or
@@ -186,7 +186,7 @@ function formatHistory({ sessions, outputTokens, estSavedTokens, estSavedUsd, si
   const sep = '──────────────────────────────────';
   const window = since ? ` (last ${since})` : '';
   if (sessions === 0) {
-    return `\nCaveman Stats — Lifetime${window}\n${sep}\nNo sessions logged yet — run /caveman-stats inside any session to start tracking.\n${sep}\n`;
+    return `\nCaveman Stats — Lifetime${window}\n${sep}\nNo sessions logged yet — run /injector-skills-stats inside any session to start tracking.\n${sep}\n`;
   }
   const usdLine = estSavedUsd > 0 ? `Est. saved (USD):      ~${formatUsd(estSavedUsd)}\n` : '';
   return `\nCaveman Stats — Lifetime${window}\n${sep}\n` +
@@ -199,7 +199,7 @@ function formatHistory({ sessions, outputTokens, estSavedTokens, estSavedUsd, si
 // Single-line tweetable summary. Stays human-friendly when no ratio is known.
 function formatShare({ outputTokens, turns, mode, model }) {
   if (turns === 0) {
-    return '🪨 caveman armed but no turns yet — caveman.sh';
+    return '🪨 injector-skills armed but no turns yet — injector-skills.sh';
   }
   const ratio = COMPRESSION[mode] != null ? COMPRESSION[mode] : null;
   const price = priceForModel(model);
@@ -211,9 +211,9 @@ function formatShare({ outputTokens, turns, mode, model }) {
       const amt = (estSaved / 1_000_000) * price;
       usd = ` (~${formatUsd(amt)})`;
     }
-    return `🪨 Saved ${estSaved.toLocaleString()} output tokens${usd} across ${turns} turns this session — caveman.sh`;
+    return `🪨 Saved ${estSaved.toLocaleString()} output tokens${usd} across ${turns} turns this session — injector-skills.sh`;
   }
-  return `🪨 ${turns} turns, ${outputTokens.toLocaleString()} output tokens this session — caveman.sh`;
+  return `🪨 ${turns} turns, ${outputTokens.toLocaleString()} output tokens this session — injector-skills.sh`;
 }
 
 // Pure formatter — separated from main() so tests can pass synthetic inputs.
@@ -243,7 +243,7 @@ function formatStats({ outputTokens, cacheReadTokens, turns, mode, model, sessio
     } else {
       footer = 'Savings est. from benchmarks/ (mean per-task). Actual varies by task.';
     }
-    savings = `Est. without caveman:  ${estNormal.toLocaleString()}\n` +
+    savings = `Est. without injector-skills:  ${estNormal.toLocaleString()}\n` +
               `Est. tokens saved:     ${estSaved.toLocaleString()} (~${Math.round(ratio * 100)}%)\n` +
               usdLine.replace(/\n$/, '');
   } else if (mode && mode !== 'off') {
@@ -279,13 +279,13 @@ function main() {
   const sinceArg = sinceIdx !== -1 ? args[sinceIdx + 1] : null;
 
   const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
-  const historyPath = path.join(claudeDir, '.caveman-history.jsonl');
+  const historyPath = path.join(claudeDir, '.injector-skills-history.jsonl');
 
   // Lifetime aggregation paths short-circuit before we need a live session.
   if (all || sinceArg) {
     const sinceMs = parseDuration(sinceArg);
     if (sinceArg && sinceMs === null) {
-      process.stderr.write(`caveman-stats: --since takes Nh or Nd (e.g. 7d, 24h), got: ${sinceArg}\n`);
+      process.stderr.write(`injector-skills-stats: --since takes Nh or Nd (e.g. 7d, 24h), got: ${sinceArg}\n`);
       process.exit(2);
     }
     const agg = aggregateHistory(historyPath, sinceMs);
@@ -296,15 +296,15 @@ function main() {
   const sessionFile = sessionFileArg || findRecentSession(claudeDir);
 
   if (!sessionFile) {
-    process.stderr.write('caveman-stats: no Claude Code session found.\n');
+    process.stderr.write('injector-skills-stats: no Claude Code session found.\n');
     process.exit(1);
   }
 
   const parsed = parseSession(sessionFile);
-  const mode = readFlag(path.join(claudeDir, '.caveman-active'));
+  const mode = readFlag(path.join(claudeDir, '.injector-skills-active'));
 
   // Append a snapshot of this session's totals to the lifetime log. Multiple
-  // /caveman-stats calls in one session emit multiple lines for the same
+  // /injector-skills-stats calls in one session emit multiple lines for the same
   // session_id; aggregateHistory keeps only the latest per session_id.
   if (parsed.turns > 0) {
     const { estSavedTokens, estSavedUsd } = deriveSavings({ ...parsed, mode });
@@ -320,12 +320,12 @@ function main() {
     }));
 
     // Statusline suffix: tiny pre-rendered string the shell statusline can
-    // cat without parsing JSONL. Updated on every /caveman-stats run.
+    // cat without parsing JSONL. Updated on every /injector-skills-stats run.
     // Routed through safeWriteFlag — the suffix path is predictable and
-    // user-owned, same symlink-clobber surface as the .caveman-active flag.
+    // user-owned, same symlink-clobber surface as the .injector-skills-active flag.
     const agg = aggregateHistory(historyPath, null);
     const suffix = agg.estSavedTokens > 0 ? `⛏ ${humanizeTokens(agg.estSavedTokens)}` : '';
-    safeWriteFlag(path.join(claudeDir, '.caveman-statusline-suffix'), suffix);
+    safeWriteFlag(path.join(claudeDir, '.injector-skills-statusline-suffix'), suffix);
   }
 
   if (share) {

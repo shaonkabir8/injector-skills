@@ -1,26 +1,26 @@
 {
-  "name": "caveman-shrink",
+  "name": "injector-skills-shrink",
   "version": "0.1.0",
-  "description": "MCP proxy that compresses prose fields (tool descriptions, etc.) using caveman rules. Same accuracy, fewer context tokens.",
+  "description": "MCP proxy that compresses prose fields (tool descriptions, etc.) using injector-skills rules. Same accuracy, fewer context tokens.",
   "license": "MIT",
-  "homepage": "https://github.com/JuliusBrussee/caveman",
+  "homepage": "https://github.com/JuliusBrussee/injector-skills",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JuliusBrussee/caveman.git",
-    "directory": "src/mcp-servers/caveman-shrink"
+    "url": "git+https://github.com/JuliusBrussee/injector-skills.git",
+    "directory": "src/mcp-servers/injector-skills-shrink"
   },
   "author": "Julius Brussee",
   "keywords": [
     "mcp",
     "model-context-protocol",
     "claude",
-    "caveman",
+    "injector-skills",
     "proxy",
     "tokens"
   ],
   "main": "compress.js",
   "bin": {
-    "caveman-shrink": "index.js"
+    "injector-skills-shrink": "index.js"
   },
   "files": [
     "index.js",

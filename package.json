@@ -1,19 +1,19 @@
 {
-  "name": "caveman-installer",
+  "name": "injector-skills-installer",
   "version": "0.1.0",
-  "description": "Caveman installer — detects your AI coding agents and installs caveman for each one.",
+  "description": "Caveman installer — detects your AI coding agents and installs injector-skills for each one.",
   "license": "MIT",
   "author": "Julius Brussee",
-  "homepage": "https://github.com/JuliusBrussee/caveman",
+  "homepage": "https://github.com/JuliusBrussee/injector-skills",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JuliusBrussee/caveman.git"
+    "url": "git+https://github.com/JuliusBrussee/injector-skills.git"
   },
   "bugs": {
-    "url": "https://github.com/JuliusBrussee/caveman/issues"
+    "url": "https://github.com/JuliusBrussee/injector-skills/issues"
   },
   "bin": {
-    "caveman": "./bin/install.js"
+    "injector-skills": "./bin/install.js"
   },
   "engines": {
     "node": ">=18"
@@ -28,7 +28,7 @@
     "skills/",
     "plugins/",
     "commands/",
-    "dist/caveman.skill",
+    "dist/injector-skills.skill",
     "README.md",
     "LICENSE"
   ]

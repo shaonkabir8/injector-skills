@@ -26,9 +26,9 @@ test('dry-run --only claude prints plan and writes nothing', () => {
   // is a no-op (the installer just prints "nothing detected" and exits 0).
   if (/Claude Code detected/.test(r.stdout)) {
     assert.match(r.stdout, /would run: claude plugin marketplace add/);
-    assert.match(r.stdout, /would run: claude plugin install caveman@caveman/);
+    assert.match(r.stdout, /would run: claude plugin install injector-skills@injector-skills/);
     assert.match(r.stdout, /would mkdir -p .*\/hooks/);
-    assert.match(r.stdout, /would install .*caveman-activate\.js/);
+    assert.match(r.stdout, /would install .*injector-skills-activate\.js/);
     assert.match(r.stdout, /would merge SessionStart \+ UserPromptSubmit \+ statusline/);
   }
   // Nothing should have been written.
@@ -40,7 +40,7 @@ test('dry-run --uninstall does not delete files', () => {
   const cfg = freshTmpDir();
   // Seed a fake installation
   fs.mkdirSync(path.join(cfg, 'hooks'), { recursive: true });
-  const fake = path.join(cfg, 'hooks', 'caveman-activate.js');
+  const fake = path.join(cfg, 'hooks', 'injector-skills-activate.js');
   fs.writeFileSync(fake, '// fake');
   fs.writeFileSync(path.join(cfg, 'settings.json'),
     JSON.stringify({ hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'node ' + fake }] }] } }, null, 2));

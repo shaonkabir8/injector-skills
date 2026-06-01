@@ -1,21 +1,21 @@
 #!/usr/bin/env node
-// caveman-shrink — MCP middleware that proxies an upstream MCP server and
+// injector-skills-shrink — MCP middleware that proxies an upstream MCP server and
 // compresses prose fields so the model sees fewer tokens.
 //
 // Usage:
-//   caveman-shrink <upstream-command> [...args]
+//   injector-skills-shrink <upstream-command> [...args]
 //
 // Example wrapping the filesystem MCP server:
 //   "mcpServers": {
 //     "fs-shrunk": {
 //       "command": "npx",
-//       "args": ["caveman-shrink", "npx", "@modelcontextprotocol/server-filesystem", "/some/path"]
+//       "args": ["injector-skills-shrink", "npx", "@modelcontextprotocol/server-filesystem", "/some/path"]
 //     }
 //   }
 //
 // Compression is applied to:
 //   - "description" fields in tools/list, prompts/list, resources/list responses
-//   - same boundaries as caveman-compress: code, URLs, paths, identifiers preserved
+//   - same boundaries as injector-skills-compress: code, URLs, paths, identifiers preserved
 //
 // What we deliberately DON'T touch in v1:
 //   - tools/call response content (high risk of breaking downstream parsing)
@@ -31,8 +31,8 @@ const { compressDescriptionsInPlace, compress } = require('./compress');
 
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  process.stderr.write('caveman-shrink: missing upstream command.\n');
-  process.stderr.write('Usage: caveman-shrink <upstream-command> [...args]\n');
+  process.stderr.write('injector-skills-shrink: missing upstream command.\n');
+  process.stderr.write('Usage: injector-skills-shrink <upstream-command> [...args]\n');
   process.exit(2);
 }
 
@@ -45,7 +45,7 @@ const upstream = spawn(args[0], args.slice(1), {
 });
 
 upstream.on('error', err => {
-  process.stderr.write(`caveman-shrink: failed to spawn upstream: ${err.message}\n`);
+  process.stderr.write(`injector-skills-shrink: failed to spawn upstream: ${err.message}\n`);
   process.exit(1);
 });
 
@@ -90,7 +90,7 @@ function transformResponse(msg) {
               compressedSomething = true;
               if (debug) {
                 process.stderr.write(
-                  `[caveman-shrink] ${arrayName}.${item.name || '?'}.${field}: ` +
+                  `[injector-skills-shrink] ${arrayName}.${item.name || '?'}.${field}: ` +
                   `${before.length}→${out.length} bytes\n`
                 );
               }

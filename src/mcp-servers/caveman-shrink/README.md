@@ -1,17 +1,17 @@
-# caveman-shrink
+# injector-skills-shrink
 
 > MCP middleware. Wrap any MCP server. Cut the prose. Keep the substance.
 
-`caveman-shrink` is a stdio proxy for the [Model Context Protocol](https://modelcontextprotocol.io). It sits between Claude (or any MCP client) and an upstream MCP server, and compresses the prose fields (`description`, etc.) using the same boundaries as the [caveman](../..) skill — preserving code, URLs, paths, and identifiers while stripping articles, filler, hedging, and pleasantries.
+`injector-skills-shrink` is a stdio proxy for the [Model Context Protocol](https://modelcontextprotocol.io). It sits between Claude (or any MCP client) and an upstream MCP server, and compresses the prose fields (`description`, etc.) using the same boundaries as the [injector-skills](../..) skill — preserving code, URLs, paths, and identifiers while stripping articles, filler, hedging, and pleasantries.
 
 The result: tool catalogs that the model burns fewer tokens to read, with no change to tool semantics.
 
 ## Install
 
 ```bash
-npm install -g caveman-shrink
+npm install -g injector-skills-shrink
 # or run directly via npx
-npx caveman-shrink <upstream-command> [...args]
+npx injector-skills-shrink <upstream-command> [...args]
 ```
 
 ## Use it
@@ -24,7 +24,7 @@ Wrap any MCP server in your Claude Code (or other client) config:
     "fs-shrunk": {
       "command": "npx",
       "args": [
-        "caveman-shrink",
+        "injector-skills-shrink",
         "npx", "@modelcontextprotocol/server-filesystem", "/path/to/dir"
       ]
     }
@@ -40,7 +40,7 @@ By design, v1 is conservative:
 
 - **Request bodies** going to the upstream are passed through unchanged.
 - **Tool call responses** (`tools/call`) are passed through unchanged. We don't want to risk silently mutating the data the upstream returns to the model.
-- **Identifiers, URLs, paths, and code-looking tokens** inside any prose are preserved exactly. Same boundaries as the parent caveman skill.
+- **Identifiers, URLs, paths, and code-looking tokens** inside any prose are preserved exactly. Same boundaries as the parent injector-skills skill.
 
 ## Configuration
 
@@ -51,7 +51,7 @@ By design, v1 is conservative:
 
 ## Status
 
-Pre-1.0 — the compression rules and field set may change. The plugin is part of the [caveman ecosystem](https://github.com/JuliusBrussee/caveman); see the parent repo for the full skill suite (`caveman`, `cavemem`, `cavekit`, `cavecrew`, `caveman-stats`, `caveman-init`).
+Pre-1.0 — the compression rules and field set may change. The plugin is part of the [injector-skills ecosystem](https://github.com/JuliusBrussee/injector-skills); see the parent repo for the full skill suite (`injector-skills`, `cavemem`, `cavekit`, `cavecrew`, `injector-skills-stats`, `injector-skills-init`).
 
 ## License
 

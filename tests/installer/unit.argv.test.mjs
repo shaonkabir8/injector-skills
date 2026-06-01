@@ -27,7 +27,7 @@ test('--help prints usage and exits 0', () => {
 test('--list prints provider matrix', () => {
   const r = run('--list');
   assert.equal(r.status, 0);
-  assert.match(r.stdout, /caveman provider matrix/);
+  assert.match(r.stdout, /injector-skills provider matrix/);
   assert.match(r.stdout, /claude\b/);
   assert.match(r.stdout, /gemini\b/);
   assert.match(r.stdout, /antigravity\b.*\(soft\)/);
@@ -73,7 +73,7 @@ test('--only with unknown agent id exits 2', () => {
   const r = run('--only', 'definitely-not-an-agent', '--non-interactive');
   assert.equal(r.status, 2);
   assert.match(r.stderr, /unknown agent: definitely-not-an-agent/);
-  assert.match(r.stderr, /caveman --list/);
+  assert.match(r.stderr, /injector-skills --list/);
 });
 
 test('--only known id passes argv validation', () => {

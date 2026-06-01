@@ -1,17 +1,17 @@
-// caveman — opencode plugin
+// injector-skills — opencode plugin
 //
 // Mirrors the Claude Code SessionStart + UserPromptSubmit hook pair using
 // opencode's lifecycle hook system. Bun ESM module; loads the existing
-// security-hardened helpers from caveman-config.js via createRequire so the
+// security-hardened helpers from injector-skills-config.js via createRequire so the
 // symlink-safe flag-write code lives in one place.
 //
 // Layout once installed:
-//   ~/.config/opencode/plugins/caveman/
+//   ~/.config/opencode/plugins/injector-skills/
 //   ├── package.json
 //   ├── plugin.js              ← this file
-//   └── caveman-config.js      ← copied sibling of src/hooks/caveman-config.js
+//   └── injector-skills-config.js      ← copied sibling of src/hooks/injector-skills-config.js
 //
-// Always-on caveman ruleset is provided separately via
+// Always-on injector-skills ruleset is provided separately via
 // ~/.config/opencode/AGENTS.md (Tier-3 base) so this plugin only handles
 // dynamic state — flag writes, slash-command parsing, natural-language
 // activation, and per-prompt reinforcement. opencode's `session.created`
@@ -28,22 +28,22 @@ import path from 'node:path';
 const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
 
-// When installed: caveman-config.cjs sits next to plugin.js (copied by
+// When installed: injector-skills-config.cjs sits next to plugin.js (copied by
 // bin/install.js, renamed to .cjs because this directory's package.json
 // declares "type": "module" — bare .js would be loaded as ESM and break
 // require()). When loaded from the source tree (tests, dev): fall back
-// to the canonical src/hooks/caveman-config.js, which lives in a directory
+// to the canonical src/hooks/injector-skills-config.js, which lives in a directory
 // whose own package.json pins "type": "commonjs". One source of truth
 // either way.
 function loadConfig() {
-  try { return require(join(here, 'caveman-config.cjs')); }
-  catch (_) { return require(join(here, '..', '..', 'hooks', 'caveman-config.js')); }
+  try { return require(join(here, 'injector-skills-config.cjs')); }
+  catch (_) { return require(join(here, '..', '..', 'hooks', 'injector-skills-config.js')); }
 }
 const config = loadConfig();
 
 const { getDefaultMode, safeWriteFlag, readFlag, VALID_MODES } = config;
 
-// Modes handled by independent skills — not selectable via /caveman <arg>.
+// Modes handled by independent skills — not selectable via /injector-skills <arg>.
 const INDEPENDENT_MODES = new Set(['commit', 'review', 'compress']);
 
 function opencodeConfigDir() {
@@ -59,7 +59,7 @@ function opencodeConfigDir() {
   return path.join(os.homedir(), '.config', 'opencode');
 }
 
-const flagPath = path.join(opencodeConfigDir(), '.caveman-active');
+const flagPath = path.join(opencodeConfigDir(), '.injector-skills-active');
 
 function reinforcementLine(mode) {
   return 'CAVEMAN MODE ACTIVE (' + mode + '). ' +
@@ -69,38 +69,38 @@ function reinforcementLine(mode) {
 
 // Parse a prompt for slash-command activation or natural-language toggles.
 // Returns the new mode to write, the literal string 'off' to deactivate, or
-// null when the prompt doesn't change state. Mirrors caveman-mode-tracker.js.
+// null when the prompt doesn't change state. Mirrors injector-skills-mode-tracker.js.
 function parseModeChange(promptRaw) {
   const prompt = (promptRaw || '').trim().toLowerCase();
   if (!prompt) return null;
 
   // Natural-language deactivation — checked before activation so "stop talking
-  // like caveman" doesn't trip the activation regex.
-  if (/\b(stop|disable|deactivate|turn off)\b.*\bcaveman\b/i.test(prompt) ||
-      /\bcaveman\b.*\b(stop|disable|deactivate|turn off)\b/i.test(prompt) ||
+  // like injector-skills" doesn't trip the activation regex.
+  if (/\b(stop|disable|deactivate|turn off)\b.*\binjector-skills\b/i.test(prompt) ||
+      /\binjector-skills\b.*\b(stop|disable|deactivate|turn off)\b/i.test(prompt) ||
       /\bnormal mode\b/i.test(prompt)) {
     return 'off';
   }
 
   // Natural-language activation
-  if (/\b(activate|enable|turn on|start|talk like)\b.*\bcaveman\b/i.test(prompt) ||
-      /\bcaveman\b.*\b(mode|activate|enable|turn on|start)\b/i.test(prompt)) {
+  if (/\b(activate|enable|turn on|start|talk like)\b.*\binjector-skills\b/i.test(prompt) ||
+      /\binjector-skills\b.*\b(mode|activate|enable|turn on|start)\b/i.test(prompt)) {
     const mode = getDefaultMode();
     return mode === 'off' ? null : mode;
   }
 
   // Slash-command parsing — opencode also expands command files, but if the
   // user types the literal slash command we still want to flip the flag.
-  if (prompt.startsWith('/caveman')) {
+  if (prompt.startsWith('/injector-skills')) {
     const parts = prompt.split(/\s+/);
     const cmd = parts[0];
     const arg = parts[1] || '';
 
-    if (cmd === '/caveman-commit')   return 'commit';
-    if (cmd === '/caveman-review')   return 'review';
-    if (cmd === '/caveman-compress') return 'compress';
+    if (cmd === '/injector-skills-commit')   return 'commit';
+    if (cmd === '/injector-skills-review')   return 'review';
+    if (cmd === '/injector-skills-compress') return 'compress';
 
-    if (cmd === '/caveman') {
+    if (cmd === '/injector-skills') {
       if (!arg)                                     return getDefaultMode();
       if (arg === 'off' || arg === 'stop' || arg === 'disable') return 'off';
       if (arg === 'wenyan-full')                    return 'wenyan';
@@ -135,7 +135,7 @@ export const CavemanPlugin = async (_ctx) => ({
   // opencode's TUI prompt-append hook fires before the prompt is sent to the
   // model. We use it for two things: react to mode-changing prompts (slash
   // commands + natural language), and append a one-line reinforcement when
-  // caveman is active so the model can't drift mid-session. Returning an
+  // injector-skills is active so the model can't drift mid-session. Returning an
   // object with `append` is the documented way to inject prompt content.
   'tui.prompt.append': async (input) => {
     const promptText = (input && (input.prompt || input.text)) || '';

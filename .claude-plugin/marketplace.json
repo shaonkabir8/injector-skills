@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "caveman",
+  "name": "injector-skills",
   "description": "Ultra-compressed communication mode for Claude Code. Cuts ~75% of tokens while keeping full technical accuracy.",
   "owner": {
     "name": "Julius Brussee",
@@ -8,8 +8,8 @@
   },
   "plugins": [
     {
-      "name": "caveman",
-      "description": "Talk like caveman. Cut ~75% tokens. Keep all technical accuracy.",
+      "name": "injector-skills",
+      "description": "Talk like injector-skills. Cut ~75% tokens. Keep all technical accuracy.",
       "source": "./",
       "category": "productivity"
     }

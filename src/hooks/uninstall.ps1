@@ -1,7 +1,7 @@
-# caveman — uninstaller for the SessionStart + UserPromptSubmit hooks (Windows PowerShell)
+# injector-skills — uninstaller for the SessionStart + UserPromptSubmit hooks (Windows PowerShell)
 # Removes: hook files in ~/.claude/hooks, settings.json entries, and the flag file
 # Usage: powershell -ExecutionPolicy Bypass -File src\hooks\uninstall.ps1
-#   or:  irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/src/hooks/uninstall.ps1 | iex
+#   or:  irm https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/src/hooks/uninstall.ps1 | iex
 param()
 
 $ErrorActionPreference = "Stop"
@@ -9,16 +9,16 @@ $ErrorActionPreference = "Stop"
 $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $env:USERPROFILE ".claude" }
 $HooksDir = Join-Path $ClaudeDir "hooks"
 $Settings = Join-Path $ClaudeDir "settings.json"
-$FlagFile = Join-Path $ClaudeDir ".caveman-active"
+$FlagFile = Join-Path $ClaudeDir ".injector-skills-active"
 
-$HookFiles = @("package.json", "caveman-config.js", "caveman-activate.js", "caveman-mode-tracker.js", "caveman-stats.js", "caveman-statusline.sh", "caveman-statusline.ps1")
+$HookFiles = @("package.json", "injector-skills-config.js", "injector-skills-activate.js", "injector-skills-mode-tracker.js", "injector-skills-stats.js", "injector-skills-statusline.sh", "injector-skills-statusline.ps1")
 
-# Detect if caveman is installed as a plugin
+# Detect if injector-skills is installed as a plugin
 $PluginInstalled = $false
 $PluginsDir = Join-Path $ClaudeDir "plugins"
 if (Test-Path $PluginsDir) {
     $found = Get-ChildItem -Path $PluginsDir -Recurse -Filter "plugin.json" -ErrorAction SilentlyContinue |
-        Where-Object { $_.FullName -match "caveman" }
+        Where-Object { $_.FullName -match "injector-skills" }
     if ($found) { $PluginInstalled = $true }
 }
 
@@ -26,14 +26,14 @@ if ($PluginInstalled) {
     Write-Host "Caveman appears to be installed as a Claude Code plugin." -ForegroundColor Yellow
     Write-Host "To uninstall the plugin, run:"
     Write-Host ""
-    Write-Host "  claude plugin disable caveman" -ForegroundColor Cyan
+    Write-Host "  claude plugin disable injector-skills" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "This script removes standalone hooks (installed via install.ps1)."
     Write-Host "Continuing with standalone hook removal..."
     Write-Host ""
 }
 
-Write-Host "Uninstalling caveman hooks..."
+Write-Host "Uninstalling injector-skills hooks..."
 
 # 1. Remove hook files
 $RemovedFiles = 0
@@ -50,11 +50,11 @@ if ($RemovedFiles -eq 0) {
     Write-Host "  No hook files found in $HooksDir"
 }
 
-# 2. Remove caveman entries from settings.json (idempotent)
+# 2. Remove injector-skills entries from settings.json (idempotent)
 if (Test-Path $Settings) {
     if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
         Write-Host "WARNING: 'node' not found - cannot safely edit settings.json." -ForegroundColor Yellow
-        Write-Host "         Remove the caveman SessionStart and UserPromptSubmit"
+        Write-Host "         Remove the injector-skills SessionStart and UserPromptSubmit"
         Write-Host "         entries from $Settings manually."
     } else {
         # Back up before editing
@@ -69,12 +69,12 @@ if (Test-Path $Settings) {
 const fs = require('fs');
 const settingsPath = process.env.CAVEMAN_SETTINGS;
 const hooksDir = process.env.CAVEMAN_HOOKS_DIR;
-const managedStatusLinePath = hooksDir + '/caveman-statusline.ps1';
+const managedStatusLinePath = hooksDir + '/injector-skills-statusline.ps1';
 const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
 
 const isCavemanEntry = (entry) =>
   entry && entry.hooks && entry.hooks.some(h =>
-    h.command && h.command.includes('caveman')
+    h.command && h.command.includes('injector-skills')
   );
 
 let removed = 0;
@@ -100,12 +100,12 @@ if (settings.statusLine) {
     : (settings.statusLine.command || '');
   if (cmd.includes(managedStatusLinePath)) {
     delete settings.statusLine;
-    console.log('  Removed caveman statusLine from settings.json');
+    console.log('  Removed injector-skills statusLine from settings.json');
   }
 }
 
 fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
-console.log('  Removed ' + removed + ' caveman hook entries from settings.json');
+console.log('  Removed ' + removed + ' injector-skills hook entries from settings.json');
 '@
 
         node -e $nodeScript
@@ -130,6 +130,6 @@ Write-Host "Done! Restart Claude Code to complete the uninstall." -ForegroundCol
 # Guidance for other agents
 Write-Host ""
 Write-Host "Other agents:"
-Write-Host "  npx skills remove caveman      # Cursor, Windsurf, Cline, Copilot, etc."
-Write-Host "  claude plugin disable caveman   # Claude Code plugin"
-Write-Host "  gemini extensions uninstall caveman  # Gemini CLI"
+Write-Host "  npx skills remove injector-skills      # Cursor, Windsurf, Cline, Copilot, etc."
+Write-Host "  claude plugin disable injector-skills   # Claude Code plugin"
+Write-Host "  gemini extensions uninstall injector-skills  # Gemini CLI"

@@ -2,16 +2,16 @@
   <img src="https://em-content.zobj.net/source/apple/391/rock_1faa8.png" width="120" />
 </p>
 
-<h1 align="center">caveman</h1>
+<h1 align="center">injector-skills</h1>
 
 <p align="center">
   <strong>why use many token when few do trick</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/JuliusBrussee/caveman/stargazers"><img src="https://img.shields.io/github/stars/JuliusBrussee/caveman?style=flat&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/JuliusBrussee/caveman/commits/main"><img src="https://img.shields.io/github/last-commit/JuliusBrussee/caveman?style=flat" alt="Last Commit"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/JuliusBrussee/caveman?style=flat" alt="License"></a>
+  <a href="https://github.com/JuliusBrussee/injector-skills/stargazers"><img src="https://img.shields.io/github/stars/JuliusBrussee/injector-skills?style=flat&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/JuliusBrussee/injector-skills/commits/main"><img src="https://img.shields.io/github/last-commit/JuliusBrussee/injector-skills?style=flat" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/JuliusBrussee/injector-skills?style=flat" alt="License"></a>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
 
 ---
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill/plugin (also Codex, Gemini, Cursor, Windsurf, Cline, Copilot, 30+ more) that makes agent talk like caveman — cuts **~75% of output tokens**, keeps full technical accuracy. Brain still big. Mouth small.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill/plugin (also Codex, Gemini, Cursor, Windsurf, Cline, Copilot, 30+ more) that makes agent talk like injector-skills — cuts **~75% of output tokens**, keeps full technical accuracy. Brain still big. Mouth small.
 
 ## Before / After
 
@@ -74,20 +74,20 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill/plugin (al
 └─────────────────────────────────────┘
 ```
 
-Pick your level of grunt — `lite` (drop filler), `full` (default caveman), `ultra` (telegraphic), or `wenyan` (classical Chinese, even shorter). One command switch. Cost go down forever.
+Pick your level of grunt — `lite` (drop filler), `full` (default injector-skills), `ultra` (telegraphic), or `wenyan` (classical Chinese, even shorter). One command switch. Cost go down forever.
 
 <table align="center">
 <tr><td>
 
-### <img src="docs/assets/dancing-rock.svg" width="22" height="22" alt="rock"/> Like this trick? Now get whole agent — **caveman-code**
+### <img src="docs/assets/dancing-rock.svg" width="22" height="22" alt="rock"/> Like this trick? Now get whole agent — **injector-skills-code**
 
-This skill shrink what agent **say**. **[caveman-code](https://github.com/JuliusBrussee/caveman-code)** shrink **everything** — full terminal coding agent, caveman top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
+This skill shrink what agent **say**. **[injector-skills-code](https://github.com/JuliusBrussee/injector-skills-code)** shrink **everything** — full terminal coding agent, injector-skills top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
 
 ```bash
-npm install -g @juliusbrussee/caveman-code
+npm install -g @juliusbrussee/injector-skills-code
 ```
 
-[**▶ Try caveman-code now →**](https://github.com/JuliusBrussee/caveman-code) — *why use many token when whole agent save*
+[**▶ Try injector-skills-code now →**](https://github.com/JuliusBrussee/injector-skills-code) — *why use many token when whole agent save*
 
 </td></tr>
 </table>
@@ -98,34 +98,34 @@ One line. Find every agent. Install for each.
 
 ```bash
 # macOS / Linux / WSL / Git Bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash
 
 # Windows (PowerShell 5.1+)
-irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.ps1 | iex
 ```
 
 ~30 seconds. Needs Node ≥18. Skip agent you no have. Safe to re-run.
 
-**Trigger:** type `/caveman` or say "talk like caveman". Stop with "normal mode".
+**Trigger:** type `/injector-skills` or say "talk like injector-skills". Stop with "normal mode".
 
 One agent only, manual command, or any of 30+ other agents → [**INSTALL.md**](./INSTALL.md).
-Install break? Open agent, say *"Read CLAUDE.md and INSTALL.md, install caveman for me."* Agent fix own brain.
+Install break? Open agent, say *"Read CLAUDE.md and INSTALL.md, install injector-skills for me."* Agent fix own brain.
 
 ## What You Get
 
 | Skill | What |
 |---|---|
-| `/caveman [lite\|full\|ultra\|wenyan]` | Compress every reply. Levels stick until session end. |
-| `/caveman-commit` | Conventional Commit messages, ≤50 char subject. Why over what. |
-| `/caveman-review` | One-line PR comments: `L42: 🔴 bug: user null. Add guard.` |
-| `/caveman-stats` | Real session token usage + lifetime savings + USD. Tweetable line via `--share`. |
-| `/caveman-compress <file>` | Rewrite memory file (e.g. `CLAUDE.md`) into caveman-speak. Cuts ~46% input tokens every session. Code/URLs/paths byte-preserved. |
-| `caveman-shrink` | MCP middleware. Wraps any MCP server, compresses tool descriptions. [npm](https://www.npmjs.com/package/caveman-shrink). |
+| `/injector-skills [lite\|full\|ultra\|wenyan]` | Compress every reply. Levels stick until session end. |
+| `/injector-skills-commit` | Conventional Commit messages, ≤50 char subject. Why over what. |
+| `/injector-skills-review` | One-line PR comments: `L42: 🔴 bug: user null. Add guard.` |
+| `/injector-skills-stats` | Real session token usage + lifetime savings + USD. Tweetable line via `--share`. |
+| `/injector-skills-compress <file>` | Rewrite memory file (e.g. `CLAUDE.md`) into injector-skills-speak. Cuts ~46% input tokens every session. Code/URLs/paths byte-preserved. |
+| `injector-skills-shrink` | MCP middleware. Wraps any MCP server, compresses tool descriptions. [npm](https://www.npmjs.com/package/injector-skills-shrink). |
 | `cavecrew-*` | Caveman subagents (investigator/builder/reviewer). ~60% fewer tokens than vanilla, main context lasts longer. |
 
-**Statusline badge** — Claude Code shows `[CAVEMAN] ⛏ 12.4k` (lifetime tokens saved). Updates every `/caveman-stats` run. Set `CAVEMAN_STATUSLINE_SAVINGS=0` to silence.
+**Statusline badge** — Claude Code shows `[CAVEMAN] ⛏ 12.4k` (lifetime tokens saved). Updates every `/injector-skills-stats` run. Set `CAVEMAN_STATUSLINE_SAVINGS=0` to silence.
 
-Auto-activate every session: Claude Code, Codex, Gemini (built-in). Cursor / Windsurf / Cline / Copilot get always-on rule files via `--with-init`. Other agents trigger with `/caveman` per session. Full feature matrix in [INSTALL.md](./INSTALL.md#what-you-get).
+Auto-activate every session: Claude Code, Codex, Gemini (built-in). Cursor / Windsurf / Cline / Copilot get always-on rule files via `--with-init`. Other agents trigger with `/injector-skills` per session. Full feature matrix in [INSTALL.md](./INSTALL.md#what-you-get).
 
 ## Benchmarks
 
@@ -147,9 +147,9 @@ Real token counts from the Claude API. Average **65% output reduction** across 1
 | **Average** | **1214** | **294** | **65%** |
 <!-- BENCHMARK-TABLE-END -->
 
-Raw data and reproduction script: [`benchmarks/`](./benchmarks/). Three-arm eval harness (baseline / terse / skill) lives in [`evals/`](./evals/) — caveman compared against `Answer concisely.` not against verbose default, so the delta is honest.
+Raw data and reproduction script: [`benchmarks/`](./benchmarks/). Three-arm eval harness (baseline / terse / skill) lives in [`evals/`](./evals/) — injector-skills compared against `Answer concisely.` not against verbose default, so the delta is honest.
 
-**caveman-compress receipts** (real memory files):
+**injector-skills-compress receipts** (real memory files):
 
 | File | Original | Compressed | Saved |
 |---|---:|---:|---:|
@@ -169,7 +169,7 @@ A March 2026 paper ["Brevity Constraints Reverse Performance Hierarchies in Lang
 
 1. Install drop skill file in agent.
 2. Skill tell agent: drop filler, keep substance, use fragments.
-3. For Claude Code, hook also write tiny flag file each session — agent see flag, talk caveman from message one. No need say `/caveman`.
+3. For Claude Code, hook also write tiny flag file each session — agent see flag, talk injector-skills from message one. No need say `/injector-skills`.
 4. Stats command read Claude Code session log, count tokens saved, write number to statusline.
 5. Caveman-compress sub-skill rewrite memory files (CLAUDE.md, project notes) so each session start with smaller context. Save tokens forever, not just one reply.
 
@@ -183,21 +183,21 @@ Caveman teach lobster brevity — same canonical installer, scoped to one agent:
 
 ```bash
 # macOS / Linux / WSL
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash -s -- --only openclaw
+curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash -s -- --only openclaw
 
 # Windows (PowerShell): no Node? install Node ≥18 first, then
-npx -y github:JuliusBrussee/caveman -- --only openclaw
+npx -y github:JuliusBrussee/injector-skills -- --only openclaw
 ```
 
 Two thing happen, no more:
 
-1. **Skill drop** at `~/.openclaw/workspace/skills/caveman/SKILL.md` — spec-correct frontmatter (`version`, `always: true`), discoverable by `openclaw skills list`. Skill not auto-inject (OpenClaw load skill on demand) — that why we also do step 2.
-2. **SOUL.md nudge.** Tiny marker-fenced block appended to `~/.openclaw/workspace/SOUL.md`. OpenClaw inject SOUL.md into *every* turn under "Project Context" (12K-per-file, 60K total — block well under). Lobster terse from message one. No `/caveman` per session. No nag.
+1. **Skill drop** at `~/.openclaw/workspace/skills/injector-skills/SKILL.md` — spec-correct frontmatter (`version`, `always: true`), discoverable by `openclaw skills list`. Skill not auto-inject (OpenClaw load skill on demand) — that why we also do step 2.
+2. **SOUL.md nudge.** Tiny marker-fenced block appended to `~/.openclaw/workspace/SOUL.md`. OpenClaw inject SOUL.md into *every* turn under "Project Context" (12K-per-file, 60K total — block well under). Lobster terse from message one. No `/injector-skills` per session. No nag.
 
 ```
 ~/.openclaw/workspace/
-├── skills/caveman/SKILL.md   ← full ruleset, on-demand load
-└── SOUL.md                    ← <!-- caveman-begin --> ... <!-- caveman-end -->
+├── skills/injector-skills/SKILL.md   ← full ruleset, on-demand load
+└── SOUL.md                    ← <!-- injector-skills-begin --> ... <!-- injector-skills-end -->
                                   ↑ auto-inject every turn
 ```
 
@@ -211,13 +211,13 @@ Five tools. One philosophy: **agent do more with less**.
 
 | Repo | What |
 |------|------|
-| [**caveman**](https://github.com/JuliusBrussee/caveman) *(you here)* | Output compression — *why use many token when few do trick* |
-| [**caveman-code**](https://github.com/JuliusBrussee/caveman-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
+| [**injector-skills**](https://github.com/JuliusBrussee/injector-skills) *(you here)* | Output compression — *why use many token when few do trick* |
+| [**injector-skills-code**](https://github.com/JuliusBrussee/injector-skills-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
 | [**cavemem**](https://github.com/JuliusBrussee/cavemem) | Cross-agent memory — *why agent forget when agent can remember* |
 | [**cavekit**](https://github.com/JuliusBrussee/cavekit) | Spec-driven build loop — *why agent guess when agent can know* |
-| [**cavegemma**](https://github.com/JuliusBrussee/finetune-caveman) | Gemma 4 31B fine-tuned on caveman pairs — *why prompt every turn when weight remember* |
+| [**cavegemma**](https://github.com/JuliusBrussee/finetune-injector-skills) | Gemma 4 31B fine-tuned on injector-skills pairs — *why prompt every turn when weight remember* |
 
-Compose: cavekit drive build, caveman compress what agent *say*, cavemem compress what agent *remember*, cavegemma bake compression into weight, caveman-code ship it all as one terminal agent. One rock. Two rock. Three rock. Four rock. Five rock. That it.
+Compose: cavekit drive build, injector-skills compress what agent *say*, cavemem compress what agent *remember*, cavegemma bake compression into weight, injector-skills-code ship it all as one terminal agent. One rock. Two rock. Three rock. Four rock. Five rock. That it.
 
 ## Links
 
@@ -225,13 +225,13 @@ Compose: cavekit drive build, caveman compress what agent *say*, cavemem compres
 - [CONTRIBUTING.md](./CONTRIBUTING.md) — how to send patch
 - [CLAUDE.md](./CLAUDE.md) — maintainer guide (file ownership, hook architecture, CI)
 - [docs/](./docs/) — extra guides (Windows install, etc.)
-- [Issues](https://github.com/JuliusBrussee/caveman/issues) — bug, feature, weird behavior
+- [Issues](https://github.com/JuliusBrussee/injector-skills/issues) — bug, feature, weird behavior
 
 ## Star This Repo
 
 Caveman save you token, save you money. Star cost zero. Fair trade. ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JuliusBrussee/caveman&type=Date)](https://star-history.com/#JuliusBrussee/caveman&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=JuliusBrussee/injector-skills&type=Date)](https://star-history.com/#JuliusBrussee/injector-skills&Date)
 
 ## Also by Julius Brussee
 

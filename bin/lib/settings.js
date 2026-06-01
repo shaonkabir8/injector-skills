@@ -1,7 +1,7 @@
-// caveman — JSONC-tolerant settings.json read/write + defensive hook validation.
+// injector-skills — JSONC-tolerant settings.json read/write + defensive hook validation.
 //
 // Lifted in spirit from gsd-build/get-shit-done's stripJsonComments + readSettings.
-// Reused by bin/install.js and (optionally) by hooks/caveman-activate.js so a
+// Reused by bin/install.js and (optionally) by hooks/injector-skills-activate.js so a
 // commented settings.json no longer crashes the installer or the runtime hooks.
 //
 // Public API:
@@ -71,14 +71,14 @@ function readSettings(p) {
   let raw;
   try { raw = fs.readFileSync(p, 'utf8'); }
   catch (e) {
-    process.stderr.write(`caveman: cannot read ${p}: ${e.message}\n`);
+    process.stderr.write(`injector-skills: cannot read ${p}: ${e.message}\n`);
     return null;
   }
   if (!raw.trim()) return {};
   try { return JSON.parse(raw); } catch (_) { /* fall through to JSONC */ }
   try { return JSON.parse(stripJsonComments(raw)); }
   catch (e) {
-    process.stderr.write(`caveman: warning — ${p} is not valid JSON or JSONC: ${e.message}\n`);
+    process.stderr.write(`injector-skills: warning — ${p} is not valid JSON or JSONC: ${e.message}\n`);
     return null;
   }
 }
@@ -124,7 +124,7 @@ function validateHookFields(settings) {
 }
 
 // ── Idempotency probe ──────────────────────────────────────────────────────
-function hasCavemanHook(settings, event, marker = 'caveman') {
+function hasCavemanHook(settings, event, marker = 'injector-skills') {
   const arr = settings && settings.hooks && settings.hooks[event];
   if (!Array.isArray(arr)) return false;
   return arr.some(e =>
@@ -154,7 +154,7 @@ function addCommandHook(settings, event, opts) {
 // Tolerates malformed pre-existing settings (non-array hook lists, foreign
 // shapes) — those get dropped by validateHookFields first so we never call
 // .length / .filter on a non-array.
-function removeCavemanHooks(settings, marker = 'caveman') {
+function removeCavemanHooks(settings, marker = 'injector-skills') {
   if (!settings || !settings.hooks) return 0;
   validateHookFields(settings);
   if (!settings.hooks) return 0; // validate may have deleted the whole tree
@@ -178,12 +178,12 @@ function removeCavemanHooks(settings, marker = 'caveman') {
 // absolute node path) and the basename is one of ours, rewrite to use
 // `absoluteNode` so GUI launchers with minimal PATH still find Node. Only
 // touches commands matching the exact bare-node shape — won't false-positive
-// on user-authored hooks that just happen to mention "caveman".
+// on user-authored hooks that just happen to mention "injector-skills".
 const MANAGED_HOOK_BASENAMES = new Set([
-  'caveman-activate.js',
-  'caveman-mode-tracker.js',
-  'caveman-stats.js',
-  'caveman-statusline.sh',
+  'injector-skills-activate.js',
+  'injector-skills-mode-tracker.js',
+  'injector-skills-stats.js',
+  'injector-skills-statusline.sh',
 ]);
 function rewriteLegacyManagedHookCommands(settings, absoluteNode) {
   if (!settings || !settings.hooks || !absoluteNode) return 0;

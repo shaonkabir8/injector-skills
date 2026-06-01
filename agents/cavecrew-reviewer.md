@@ -45,4 +45,4 @@ File order, ascending line numbers within file.
 
 ## Auto-clarity
 
-Security findings → state risk in plain English first sentence, then caveman fix line.
+Security findings → state risk in plain English first sentence, then injector-skills fix line.

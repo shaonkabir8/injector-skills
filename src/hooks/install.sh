@@ -1,8 +1,8 @@
 #!/bin/bash
-# caveman — one-command hook installer for Claude Code
+# injector-skills — one-command hook installer for Claude Code
 # Installs: SessionStart hook (auto-load rules) + UserPromptSubmit hook (mode tracking)
 # Usage: bash src/hooks/install.sh
-#   or:  bash <(curl -s https://raw.githubusercontent.com/JuliusBrussee/caveman/main/src/hooks/install.sh)
+#   or:  bash <(curl -s https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/src/hooks/install.sh)
 #   or:  bash src/hooks/install.sh --force   (re-install over existing hooks)
 set -e
 
@@ -26,7 +26,7 @@ esac
 
 # Require node — we use it to merge the hook config into settings.json
 if ! command -v node >/dev/null 2>&1; then
-  echo "ERROR: 'node' is required to install the caveman hooks (used to merge"
+  echo "ERROR: 'node' is required to install the injector-skills hooks (used to merge"
   echo "       the hook config into ~/.claude/settings.json safely)."
   echo "       Install Node.js from https://nodejs.org and re-run this script."
   exit 1
@@ -35,9 +35,9 @@ fi
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 HOOKS_DIR="$CLAUDE_DIR/hooks"
 SETTINGS="$CLAUDE_DIR/settings.json"
-REPO_URL="https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks"
+REPO_URL="https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/hooks"
 
-HOOK_FILES=("package.json" "caveman-config.js" "caveman-activate.js" "caveman-mode-tracker.js" "caveman-stats.js" "caveman-statusline.sh")
+HOOK_FILES=("package.json" "injector-skills-config.js" "injector-skills-activate.js" "injector-skills-mode-tracker.js" "injector-skills-stats.js" "injector-skills-statusline.sh")
 
 # Resolve source — works from repo clone or curl pipe
 SCRIPT_DIR=""
@@ -67,7 +67,7 @@ if [ "$FORCE" -eq 0 ]; then
       const hasCavemanHook = (event) =>
         Array.isArray(settings.hooks?.[event]) &&
         settings.hooks[event].some(e =>
-          e.hooks && e.hooks.some(h => h.command && h.command.includes('caveman'))
+          e.hooks && e.hooks.some(h => h.command && h.command.includes('injector-skills'))
         );
       process.exit(
         hasCavemanHook('SessionStart') &&
@@ -95,10 +95,10 @@ if [ "$ALREADY_INSTALLED" -eq 1 ] && [ "$FORCE" -eq 0 ]; then
   exit 0
 fi
 
-if [ "$FORCE" -eq 1 ] && [ -f "$HOOKS_DIR/caveman-activate.js" ]; then
-  echo "Reinstalling caveman hooks (--force)..."
+if [ "$FORCE" -eq 1 ] && [ -f "$HOOKS_DIR/injector-skills-activate.js" ]; then
+  echo "Reinstalling injector-skills hooks (--force)..."
 else
-  echo "Installing caveman hooks..."
+  echo "Installing injector-skills hooks..."
 fi
 
 # 1. Ensure hooks dir exists
@@ -115,7 +115,7 @@ for hook in "${HOOK_FILES[@]}"; do
 done
 
 # Make statusline script executable
-chmod +x "$HOOKS_DIR/caveman-statusline.sh"
+chmod +x "$HOOKS_DIR/injector-skills-statusline.sh"
 
 # 3. Wire hooks + statusline into settings.json (idempotent)
 if [ ! -f "$SETTINGS" ]; then
@@ -130,43 +130,43 @@ CAVEMAN_SETTINGS="$SETTINGS" CAVEMAN_HOOKS_DIR="$HOOKS_DIR" node -e "
   const fs = require('fs');
   const settingsPath = process.env.CAVEMAN_SETTINGS;
   const hooksDir = process.env.CAVEMAN_HOOKS_DIR;
-  const managedStatusLinePath = hooksDir + '/caveman-statusline.sh';
+  const managedStatusLinePath = hooksDir + '/injector-skills-statusline.sh';
   const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
   if (!settings.hooks) settings.hooks = {};
 
-  // SessionStart — auto-load caveman rules
+  // SessionStart — auto-load injector-skills rules
   if (!settings.hooks.SessionStart) settings.hooks.SessionStart = [];
   const hasStart = settings.hooks.SessionStart.some(e =>
-    e.hooks && e.hooks.some(h => h.command && h.command.includes('caveman'))
+    e.hooks && e.hooks.some(h => h.command && h.command.includes('injector-skills'))
   );
   if (!hasStart) {
     settings.hooks.SessionStart.push({
       hooks: [{
         type: 'command',
-        command: 'node \"' + hooksDir + '/caveman-activate.js\"',
+        command: 'node \"' + hooksDir + '/injector-skills-activate.js\"',
         timeout: 5,
-        statusMessage: 'Loading caveman mode...'
+        statusMessage: 'Loading injector-skills mode...'
       }]
     });
   }
 
-  // UserPromptSubmit — track mode changes when user types /caveman commands
+  // UserPromptSubmit — track mode changes when user types /injector-skills commands
   if (!settings.hooks.UserPromptSubmit) settings.hooks.UserPromptSubmit = [];
   const hasPrompt = settings.hooks.UserPromptSubmit.some(e =>
-    e.hooks && e.hooks.some(h => h.command && h.command.includes('caveman'))
+    e.hooks && e.hooks.some(h => h.command && h.command.includes('injector-skills'))
   );
   if (!hasPrompt) {
     settings.hooks.UserPromptSubmit.push({
       hooks: [{
         type: 'command',
-        command: 'node \"' + hooksDir + '/caveman-mode-tracker.js\"',
+        command: 'node \"' + hooksDir + '/injector-skills-mode-tracker.js\"',
         timeout: 5,
-        statusMessage: 'Tracking caveman mode...'
+        statusMessage: 'Tracking injector-skills mode...'
       }]
     });
   }
 
-  // Statusline — wire caveman badge (report if skipped)
+  // Statusline — wire injector-skills badge (report if skipped)
   if (!settings.statusLine) {
     settings.statusLine = {
       type: 'command',
@@ -180,7 +180,7 @@ CAVEMAN_SETTINGS="$SETTINGS" CAVEMAN_HOOKS_DIR="$HOOKS_DIR" node -e "
     if (cmd.includes(managedStatusLinePath)) {
       console.log('  Statusline badge already configured.');
     } else {
-      console.log('  NOTE: Existing statusline detected — caveman badge NOT added.');
+      console.log('  NOTE: Existing statusline detected — injector-skills badge NOT added.');
       console.log('        See src/hooks/README.md to add the badge to your existing statusline.');
     }
   }
@@ -193,7 +193,7 @@ echo ""
 echo "Done! Restart Claude Code to activate."
 echo ""
 echo "What's installed:"
-echo "  - SessionStart hook: auto-loads caveman rules every session"
+echo "  - SessionStart hook: auto-loads injector-skills rules every session"
 echo "  - Mode tracker hook: updates statusline badge when you switch modes"
-echo "    (/caveman lite, /caveman ultra, /caveman-commit, etc.)"
+echo "    (/injector-skills lite, /injector-skills ultra, /injector-skills-commit, etc.)"
 echo "  - Statusline badge: shows [CAVEMAN] or [CAVEMAN:ULTRA] etc."

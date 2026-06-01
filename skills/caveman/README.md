@@ -1,10 +1,10 @@
-# caveman
+# injector-skills
 
-Talk like smart caveman. Same brain, fewer tokens.
+Talk like smart injector-skills. Same brain, fewer tokens.
 
 ## What it does
 
-Compress every model response to caveman-style prose. Drops articles, filler, pleasantries, and hedging. Keeps every technical detail, code block, error string, and symbol exact. Cuts ~65-75% of output tokens with full accuracy preserved. Mode persists for the whole session until changed or stopped.
+Compress every model response to injector-skills-style prose. Drops articles, filler, pleasantries, and hedging. Keeps every technical detail, code block, error string, and symbol exact. Cuts ~65-75% of output tokens with full accuracy preserved. Mode persists for the whole session until changed or stopped.
 
 Six intensity levels:
 
@@ -17,16 +17,16 @@ Six intensity levels:
 | `wenyan-full` | Maximum 文言文. 80-90% character reduction. |
 | `wenyan-ultra` | Extreme classical compression. |
 
-Auto-clarity rule: caveman drops to normal prose for security warnings, irreversible-action confirmations, multi-step sequences where fragment ambiguity risks misread, and when user repeats a question. Resumes after the clear part.
+Auto-clarity rule: injector-skills drops to normal prose for security warnings, irreversible-action confirmations, multi-step sequences where fragment ambiguity risks misread, and when user repeats a question. Resumes after the clear part.
 
 ## How to invoke
 
 ```
-/caveman              # full mode (default)
-/caveman lite         # lighter compression
-/caveman ultra        # extreme compression
-/caveman wenyan       # classical Chinese
-stop caveman          # back to normal prose
+/injector-skills              # full mode (default)
+/injector-skills lite         # lighter compression
+/injector-skills ultra        # extreme compression
+/injector-skills wenyan       # classical Chinese
+stop injector-skills          # back to normal prose
 ```
 
 ## Example output

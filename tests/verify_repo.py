@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local verification runner for caveman install surfaces."""
+"""Local verification runner for injector-skills install surfaces."""
 
 from __future__ import annotations
 
@@ -105,11 +105,11 @@ def verify_skill_frontmatter_upload_compatibility() -> None:
     section("Skill Frontmatter Upload Compatibility")
 
     skill_paths = [
-        ROOT / "skills/caveman/SKILL.md",
-        ROOT / "skills/caveman-commit/SKILL.md",
-        ROOT / "skills/caveman-help/SKILL.md",
-        ROOT / "skills/caveman-review/SKILL.md",
-        ROOT / "skills/caveman-compress/SKILL.md",
+        ROOT / "skills/injector-skills/SKILL.md",
+        ROOT / "skills/injector-skills-commit/SKILL.md",
+        ROOT / "skills/injector-skills-help/SKILL.md",
+        ROOT / "skills/injector-skills-review/SKILL.md",
+        ROOT / "skills/injector-skills-compress/SKILL.md",
     ]
     for path in skill_paths:
         description = _frontmatter_description(path)
@@ -123,10 +123,10 @@ def verify_skill_frontmatter_upload_compatibility() -> None:
 
 def verify_synced_files() -> None:
     section("Synced Files")
-    skill_source = ROOT / "skills/caveman/SKILL.md"
+    skill_source = ROOT / "skills/injector-skills/SKILL.md"
 
     skill_copies = [
-        ROOT / "plugins/caveman/skills/caveman/SKILL.md",
+        ROOT / "plugins/injector-skills/skills/injector-skills/SKILL.md",
     ]
     for copy in skill_copies:
         ensure(
@@ -134,24 +134,24 @@ def verify_synced_files() -> None:
             f"Skill copy mismatch: {copy}",
         )
 
-    with zipfile.ZipFile(ROOT / "dist" / "caveman.skill") as archive:
-        ensure("caveman/SKILL.md" in archive.namelist(), "caveman.skill missing caveman/SKILL.md")
+    with zipfile.ZipFile(ROOT / "dist" / "injector-skills.skill") as archive:
+        ensure("injector-skills/SKILL.md" in archive.namelist(), "injector-skills.skill missing injector-skills/SKILL.md")
         ensure(
-            archive.read("caveman/SKILL.md").decode("utf-8")
+            archive.read("injector-skills/SKILL.md").decode("utf-8")
             == skill_source.read_text(encoding="utf-8"),
-            "caveman.skill payload mismatch",
+            "injector-skills.skill payload mismatch",
         )
 
     ensure(
         (ROOT / "bin" / "install.js").exists(),
-        "bin/install.js missing — package.json bin entry would break npx caveman",
+        "bin/install.js missing — package.json bin entry would break npx injector-skills",
     )
     ensure(
         (ROOT / "bin" / "lib" / "settings.js").exists(),
         "bin/lib/settings.js missing — installer would crash on JSONC settings.json",
     )
 
-    print("Synced copies, caveman.skill zip, and installer entrypoints OK")
+    print("Synced copies, injector-skills.skill zip, and installer entrypoints OK")
 
 
 def verify_manifests_and_syntax() -> None:
@@ -163,25 +163,25 @@ def verify_manifests_and_syntax() -> None:
         ROOT / ".claude-plugin/marketplace.json",
         ROOT / ".codex/hooks.json",
         ROOT / "gemini-extension.json",
-        ROOT / "plugins/caveman/.codex-plugin/plugin.json",
+        ROOT / "plugins/injector-skills/.codex-plugin/plugin.json",
     ]
     for path in manifest_paths:
         read_json(path)
 
-    run(["node", "--check", "src/hooks/caveman-config.js"])
-    run(["node", "--check", "src/hooks/caveman-activate.js"])
-    run(["node", "--check", "src/hooks/caveman-mode-tracker.js"])
+    run(["node", "--check", "src/hooks/injector-skills-config.js"])
+    run(["node", "--check", "src/hooks/injector-skills-activate.js"])
+    run(["node", "--check", "src/hooks/injector-skills-mode-tracker.js"])
     run(["node", "--check", "bin/install.js"])
     run(["node", "--check", "bin/lib/settings.js"])
     run(["bash", "-n", "src/hooks/install.sh"])
     run(["bash", "-n", "src/hooks/uninstall.sh"])
-    run(["bash", "-n", "src/hooks/caveman-statusline.sh"])
+    run(["bash", "-n", "src/hooks/injector-skills-statusline.sh"])
 
-    # Ensure install/uninstall scripts include caveman-config.js
+    # Ensure install/uninstall scripts include injector-skills-config.js
     install_sh = (ROOT / "src/hooks/install.sh").read_text(encoding="utf-8")
     uninstall_sh = (ROOT / "src/hooks/uninstall.sh").read_text(encoding="utf-8")
-    ensure("caveman-config.js" in install_sh, "install.sh missing caveman-config.js")
-    ensure("caveman-config.js" in uninstall_sh, "uninstall.sh missing caveman-config.js")
+    ensure("injector-skills-config.js" in install_sh, "install.sh missing injector-skills-config.js")
+    ensure("injector-skills-config.js" in uninstall_sh, "uninstall.sh missing injector-skills-config.js")
 
     print("JSON manifests and JS/bash syntax OK")
 
@@ -190,24 +190,24 @@ def verify_powershell_static() -> None:
     section("PowerShell Static Checks")
     install_text = (ROOT / "src/hooks/install.ps1").read_text(encoding="utf-8")
     uninstall_text = (ROOT / "src/hooks/uninstall.ps1").read_text(encoding="utf-8")
-    statusline_text = (ROOT / "src/hooks/caveman-statusline.ps1").read_text(encoding="utf-8")
+    statusline_text = (ROOT / "src/hooks/injector-skills-statusline.ps1").read_text(encoding="utf-8")
 
-    ensure("caveman-config.js" in install_text, "install.ps1 missing caveman-config.js")
-    ensure("caveman-config.js" in uninstall_text, "uninstall.ps1 missing caveman-config.js")
-    ensure("caveman-statusline.ps1" in install_text, "install.ps1 missing statusline.ps1")
-    ensure("caveman-statusline.ps1" in uninstall_text, "uninstall.ps1 missing statusline.ps1")
+    ensure("injector-skills-config.js" in install_text, "install.ps1 missing injector-skills-config.js")
+    ensure("injector-skills-config.js" in uninstall_text, "uninstall.ps1 missing injector-skills-config.js")
+    ensure("injector-skills-statusline.ps1" in install_text, "install.ps1 missing statusline.ps1")
+    ensure("injector-skills-statusline.ps1" in uninstall_text, "uninstall.ps1 missing statusline.ps1")
     ensure("-AsHashtable" not in install_text, "install.ps1 should stay compatible with Windows PowerShell 5.1")
     ensure(
         "powershell -ExecutionPolicy Bypass -File" in install_text,
         "install.ps1 missing PowerShell statusline command",
     )
-    ensure("[CAVEMAN" in statusline_text, "caveman-statusline.ps1 missing badge output")
+    ensure("[CAVEMAN" in statusline_text, "injector-skills-statusline.ps1 missing badge output")
 
     print("Windows install path statically wired")
 
 
 def load_compress_modules():
-    sys.path.insert(0, str(ROOT / "skills/caveman-compress"))
+    sys.path.insert(0, str(ROOT / "skills/injector-skills-compress"))
     import scripts.benchmark  # noqa: F401
     import scripts.cli as cli
     import scripts.compress  # noqa: F401
@@ -221,8 +221,8 @@ def verify_compress_fixtures() -> None:
     section("Compress Fixtures")
     _, detect, validate = load_compress_modules()
 
-    fixtures = sorted((ROOT / "tests/caveman-compress").glob("*.original.md"))
-    ensure(fixtures, "No caveman-compress fixtures found")
+    fixtures = sorted((ROOT / "tests/injector-skills-compress").glob("*.original.md"))
+    ensure(fixtures, "No injector-skills-compress fixtures found")
 
     for original in fixtures:
         compressed = original.with_name(original.name.replace(".original.md", ".md"))
@@ -231,7 +231,7 @@ def verify_compress_fixtures() -> None:
         ensure(result.is_valid, f"Fixture validation failed for {compressed.name}: {result.errors}")
         ensure(detect.should_compress(compressed), f"Fixture should be compressible: {compressed.name}")
 
-    print(f"Validated {len(fixtures)} caveman-compress fixture pairs")
+    print(f"Validated {len(fixtures)} injector-skills-compress fixture pairs")
 
 
 def verify_compress_cli() -> None:
@@ -239,7 +239,7 @@ def verify_compress_cli() -> None:
 
     skip_result = run(
         ["python3", "-m", "scripts", "../../src/hooks/install.sh"],
-        cwd=ROOT / "skills/caveman-compress",
+        cwd=ROOT / "skills/injector-skills-compress",
         check=False,
     )
     ensure(skip_result.returncode == 0, "compress CLI skip path should exit 0")
@@ -251,7 +251,7 @@ def verify_compress_cli() -> None:
 
     missing_result = run(
         ["python3", "-m", "scripts", "../../does-not-exist.md"],
-        cwd=ROOT / "skills/caveman-compress",
+        cwd=ROOT / "skills/injector-skills-compress",
         check=False,
     )
     ensure(missing_result.returncode == 1, "compress CLI missing-file path should exit 1")
@@ -266,7 +266,7 @@ def verify_hook_install_flow() -> None:
     ensure(shutil.which("node") is not None, "node is required for hook verification")
     ensure(shutil.which("bash") is not None, "bash is required for hook verification")
 
-    with tempfile.TemporaryDirectory(prefix="caveman-verify-") as temp_root:
+    with tempfile.TemporaryDirectory(prefix="injector-skills-verify-") as temp_root:
         temp_root_path = Path(temp_root)
         home = temp_root_path / "home"
         claude_dir = home / ".claude"
@@ -288,60 +288,60 @@ def verify_hook_install_flow() -> None:
         ensure("UserPromptSubmit" in hooks, "UserPromptSubmit hook missing after install")
 
         activate = run(
-            ["node", "src/hooks/caveman-activate.js"],
+            ["node", "src/hooks/injector-skills-activate.js"],
             env=hook_env,
         )
-        ensure("CAVEMAN MODE ACTIVE" in activate.stdout, "activation output missing caveman banner")
+        ensure("CAVEMAN MODE ACTIVE" in activate.stdout, "activation output missing injector-skills banner")
         ensure("STATUSLINE SETUP NEEDED" not in activate.stdout, "activation should stay quiet when custom statusline exists")
-        ensure((claude_dir / ".caveman-active").read_text(encoding="utf-8") == "full", "activation flag should default to full")
+        ensure((claude_dir / ".injector-skills-active").read_text(encoding="utf-8") == "full", "activation flag should default to full")
 
         # Test configurable default mode via CAVEMAN_DEFAULT_MODE env var
         activate_custom = run(
-            ["node", "src/hooks/caveman-activate.js"],
+            ["node", "src/hooks/injector-skills-activate.js"],
             env={**hook_env, "CAVEMAN_DEFAULT_MODE": "ultra"},
         )
         ensure("CAVEMAN MODE ACTIVE" in activate_custom.stdout, "activation with custom default missing banner")
         ensure(
-            (claude_dir / ".caveman-active").read_text(encoding="utf-8") == "ultra",
+            (claude_dir / ".injector-skills-active").read_text(encoding="utf-8") == "ultra",
             "CAVEMAN_DEFAULT_MODE=ultra should set flag to ultra",
         )
         # Test "off" mode — activation skipped, flag removed
         activate_off = run(
-            ["node", "src/hooks/caveman-activate.js"],
+            ["node", "src/hooks/injector-skills-activate.js"],
             env={**hook_env, "CAVEMAN_DEFAULT_MODE": "off"},
         )
-        ensure("CAVEMAN MODE ACTIVE" not in activate_off.stdout, "off mode should not emit caveman banner")
-        ensure(not (claude_dir / ".caveman-active").exists(), "off mode should remove flag file")
+        ensure("CAVEMAN MODE ACTIVE" not in activate_off.stdout, "off mode should not emit injector-skills banner")
+        ensure(not (claude_dir / ".injector-skills-active").exists(), "off mode should remove flag file")
 
-        # Test mode tracker with /caveman when default is off — should NOT write flag
+        # Test mode tracker with /injector-skills when default is off — should NOT write flag
         subprocess.run(
-            ["node", "src/hooks/caveman-mode-tracker.js"],
+            ["node", "src/hooks/injector-skills-mode-tracker.js"],
             cwd=ROOT,
             env={**os.environ, **hook_env, "CAVEMAN_DEFAULT_MODE": "off"},
             text=True,
             encoding="utf-8",
-            input='{"prompt":"/caveman"}',
+            input='{"prompt":"/injector-skills"}',
             capture_output=True,
             check=True,
         )
-        ensure(not (claude_dir / ".caveman-active").exists(), "/caveman with off default should not write flag")
+        ensure(not (claude_dir / ".injector-skills-active").exists(), "/injector-skills with off default should not write flag")
 
         # Reset back to full for subsequent tests
-        (claude_dir / ".caveman-active").write_text("full")
+        (claude_dir / ".injector-skills-active").write_text("full")
 
         run(
-            ["node", "src/hooks/caveman-mode-tracker.js"],
+            ["node", "src/hooks/injector-skills-mode-tracker.js"],
             env=hook_env,
             check=True,
         )
 
         ultra_prompt = subprocess.run(
-            ["node", "src/hooks/caveman-mode-tracker.js"],
+            ["node", "src/hooks/injector-skills-mode-tracker.js"],
             cwd=ROOT,
             env={**os.environ, **hook_env},
             text=True,
             encoding="utf-8",
-            input='{"prompt":"/caveman ultra"}',
+            input='{"prompt":"/injector-skills ultra"}',
             capture_output=True,
             check=True,
         )
@@ -349,10 +349,10 @@ def verify_hook_install_flow() -> None:
             "CAVEMAN MODE ACTIVE (ultra)" in ultra_prompt.stdout,
             "mode tracker should emit active-mode reinforcement",
         )
-        ensure((claude_dir / ".caveman-active").read_text(encoding="utf-8") == "ultra", "mode tracker did not record ultra")
+        ensure((claude_dir / ".injector-skills-active").read_text(encoding="utf-8") == "ultra", "mode tracker did not record ultra")
 
         subprocess.run(
-            ["node", "src/hooks/caveman-mode-tracker.js"],
+            ["node", "src/hooks/injector-skills-mode-tracker.js"],
             cwd=ROOT,
             env={**os.environ, **hook_env},
             text=True,
@@ -361,11 +361,11 @@ def verify_hook_install_flow() -> None:
             capture_output=True,
             check=True,
         )
-        ensure(not (claude_dir / ".caveman-active").exists(), "normal mode should remove flag file")
+        ensure(not (claude_dir / ".injector-skills-active").exists(), "normal mode should remove flag file")
 
-        (claude_dir / ".caveman-active").write_text("wenyan-ultra")
+        (claude_dir / ".injector-skills-active").write_text("wenyan-ultra")
         statusline = run(
-            ["bash", "src/hooks/caveman-statusline.sh"],
+            ["bash", "src/hooks/injector-skills-statusline.sh"],
             env=hook_env,
         )
         ensure("[CAVEMAN:WENYAN-ULTRA]" in statusline.stdout, "statusline badge output mismatch")
@@ -375,17 +375,17 @@ def verify_hook_install_flow() -> None:
 
         run(["bash", "src/hooks/uninstall.sh"], env=hook_env)
         settings_after = read_json(claude_dir / "settings.json")
-        ensure(settings_after == existing_settings, "uninstall.sh did not restore non-caveman settings")
-        ensure(not (claude_dir / ".caveman-active").exists(), "uninstall.sh should remove flag file")
+        ensure(settings_after == existing_settings, "uninstall.sh did not restore non-injector-skills settings")
+        ensure(not (claude_dir / ".injector-skills-active").exists(), "uninstall.sh should remove flag file")
 
-    with tempfile.TemporaryDirectory(prefix="caveman-verify-fresh-") as temp_root:
+    with tempfile.TemporaryDirectory(prefix="injector-skills-verify-fresh-") as temp_root:
         home = Path(temp_root) / "home"
         claude_dir = home / ".claude"
         hook_env = {"HOME": shell_path(home), "CLAUDE_CONFIG_DIR": shell_path(claude_dir)}
         run(["bash", "src/hooks/install.sh"], env=hook_env)
         settings = read_json(claude_dir / "settings.json")
         ensure("statusLine" in settings, "fresh install should configure statusline")
-        activate = run(["node", "src/hooks/caveman-activate.js"], env=hook_env)
+        activate = run(["node", "src/hooks/injector-skills-activate.js"], env=hook_env)
         ensure("STATUSLINE SETUP NEEDED" not in activate.stdout, "fresh install should not nudge for statusline")
         run(["bash", "src/hooks/uninstall.sh"], env=hook_env)
         ensure(read_json(claude_dir / "settings.json") == {}, "fresh uninstall should leave empty settings")

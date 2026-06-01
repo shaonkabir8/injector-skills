@@ -9,13 +9,13 @@ If just want it to work, run the one-liner. If want to know what gets touched, s
 **macOS / Linux / WSL / Git Bash**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.sh | bash
 ```
 
 **Windows (PowerShell 5.1+)**
 
 ```powershell
-irm https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.ps1 | iex
 ```
 
 What it does:
@@ -28,7 +28,7 @@ What it does:
 Want to preview before installing? Use `--dry-run`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash -s -- --dry-run
+curl -fsSL https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.sh | bash -s -- --dry-run
 ```
 
 ## Per-agent install
@@ -37,40 +37,40 @@ If you want to install for one agent (or want to know exactly what command runs 
 
 | Agent | Install command | Auto-activates? |
 |---|---|:-:|
-| **Claude Code** | `claude plugin marketplace add JuliusBrussee/injector-skills && claude plugin install injector-skills@injector-skills` | Yes |
-| **Gemini CLI** | `gemini extensions install https://github.com/JuliusBrussee/injector-skills` | Yes |
-| **opencode** | `node bin/install.js --only opencode` *(or `npx -y github:JuliusBrussee/injector-skills -- --only opencode`)* | Yes (plugin + AGENTS.md) |
-| **OpenClaw** | `npx -y github:JuliusBrussee/injector-skills -- --only openclaw` | Yes (workspace skill + SOUL.md) |
-| **Codex CLI** | `npx skills add JuliusBrussee/injector-skills -a codex` | Per-session: `/injector-skills` |
-| **Cursor** | `npx skills add JuliusBrussee/injector-skills -a cursor` | Per-session by default; `--with-init` for an always-on rule file |
-| **Windsurf** | `npx skills add JuliusBrussee/injector-skills -a windsurf` | Per-session by default; `--with-init` for an always-on rule file |
-| **Cline** | `npx skills add JuliusBrussee/injector-skills -a cline` | Per-session by default; `--with-init` for an always-on rule file |
-| **GitHub Copilot** *(soft probe)* | `npx -y github:JuliusBrussee/injector-skills -- --only copilot --with-init` | Repo-wide instructions via `--with-init` |
-| **Continue** | `npx skills add JuliusBrussee/injector-skills -a continue` | No — say `/injector-skills` |
-| **Kilo Code** | `npx skills add JuliusBrussee/injector-skills -a kilo` | No |
-| **Roo Code** | `npx skills add JuliusBrussee/injector-skills -a roo` | No |
-| **Augment Code** | `npx skills add JuliusBrussee/injector-skills -a augment` | No |
-| **Aider Desk** | `npx skills add JuliusBrussee/injector-skills -a aider-desk` | No |
-| **Sourcegraph Amp** | `npx skills add JuliusBrussee/injector-skills -a amp` | No |
-| **IBM Bob** | `npx skills add JuliusBrussee/injector-skills -a bob` | No |
-| **Crush** | `npx skills add JuliusBrussee/injector-skills -a crush` | No |
-| **Devin (terminal)** | `npx skills add JuliusBrussee/injector-skills -a devin` | No |
-| **Droid (Factory)** | `npx skills add JuliusBrussee/injector-skills -a droid` | No |
-| **ForgeCode** | `npx skills add JuliusBrussee/injector-skills -a forgecode` | No |
-| **Block Goose** | `npx skills add JuliusBrussee/injector-skills -a goose` | No |
-| **iFlow CLI** | `npx skills add JuliusBrussee/injector-skills -a iflow-cli` | No |
-| **Kiro CLI** | `npx skills add JuliusBrussee/injector-skills -a kiro-cli` | No |
-| **Mistral Vibe** | `npx skills add JuliusBrussee/injector-skills -a mistral-vibe` | No |
-| **OpenHands** | `npx skills add JuliusBrussee/injector-skills -a openhands` | No |
-| **Qwen Code** | `npx skills add JuliusBrussee/injector-skills -a qwen-code` | No |
-| **Atlassian Rovo Dev** | `npx skills add JuliusBrussee/injector-skills -a rovodev` | No |
-| **Tabnine CLI** | `npx skills add JuliusBrussee/injector-skills -a tabnine-cli` | No |
-| **Trae** | `npx skills add JuliusBrussee/injector-skills -a trae` | No |
-| **Warp** | `npx skills add JuliusBrussee/injector-skills -a warp` | No |
-| **Replit Agent** | `npx skills add JuliusBrussee/injector-skills -a replit` | No |
-| **JetBrains Junie** *(soft probe)* | `npx skills add JuliusBrussee/injector-skills -a junie` | No |
-| **Qoder** *(soft probe)* | `npx skills add JuliusBrussee/injector-skills -a qoder` | No |
-| **Google Antigravity** *(soft probe)* | `npx skills add JuliusBrussee/injector-skills -a antigravity` | No |
+| **Claude Code** | `claude plugin marketplace add shaonkabir8/injector-skills && claude plugin install injector-skills@injector-skills` | Yes |
+| **Gemini CLI** | `gemini extensions install https://github.com/shaonkabir8/injector-skills` | Yes |
+| **opencode** | `node bin/install.js --only opencode` *(or `npx -y github:shaonkabir8/injector-skills -- --only opencode`)* | Yes (plugin + AGENTS.md) |
+| **OpenClaw** | `npx -y github:shaonkabir8/injector-skills -- --only openclaw` | Yes (workspace skill + SOUL.md) |
+| **Codex CLI** | `npx skills add shaonkabir8/injector-skills -a codex` | Per-session: `/injector-skills` |
+| **Cursor** | `npx skills add shaonkabir8/injector-skills -a cursor` | Per-session by default; `--with-init` for an always-on rule file |
+| **Windsurf** | `npx skills add shaonkabir8/injector-skills -a windsurf` | Per-session by default; `--with-init` for an always-on rule file |
+| **Cline** | `npx skills add shaonkabir8/injector-skills -a cline` | Per-session by default; `--with-init` for an always-on rule file |
+| **GitHub Copilot** *(soft probe)* | `npx -y github:shaonkabir8/injector-skills -- --only copilot --with-init` | Repo-wide instructions via `--with-init` |
+| **Continue** | `npx skills add shaonkabir8/injector-skills -a continue` | No — say `/injector-skills` |
+| **Kilo Code** | `npx skills add shaonkabir8/injector-skills -a kilo` | No |
+| **Roo Code** | `npx skills add shaonkabir8/injector-skills -a roo` | No |
+| **Augment Code** | `npx skills add shaonkabir8/injector-skills -a augment` | No |
+| **Aider Desk** | `npx skills add shaonkabir8/injector-skills -a aider-desk` | No |
+| **Sourcegraph Amp** | `npx skills add shaonkabir8/injector-skills -a amp` | No |
+| **IBM Bob** | `npx skills add shaonkabir8/injector-skills -a bob` | No |
+| **Crush** | `npx skills add shaonkabir8/injector-skills -a crush` | No |
+| **Devin (terminal)** | `npx skills add shaonkabir8/injector-skills -a devin` | No |
+| **Droid (Factory)** | `npx skills add shaonkabir8/injector-skills -a droid` | No |
+| **ForgeCode** | `npx skills add shaonkabir8/injector-skills -a forgecode` | No |
+| **Block Goose** | `npx skills add shaonkabir8/injector-skills -a goose` | No |
+| **iFlow CLI** | `npx skills add shaonkabir8/injector-skills -a iflow-cli` | No |
+| **Kiro CLI** | `npx skills add shaonkabir8/injector-skills -a kiro-cli` | No |
+| **Mistral Vibe** | `npx skills add shaonkabir8/injector-skills -a mistral-vibe` | No |
+| **OpenHands** | `npx skills add shaonkabir8/injector-skills -a openhands` | No |
+| **Qwen Code** | `npx skills add shaonkabir8/injector-skills -a qwen-code` | No |
+| **Atlassian Rovo Dev** | `npx skills add shaonkabir8/injector-skills -a rovodev` | No |
+| **Tabnine CLI** | `npx skills add shaonkabir8/injector-skills -a tabnine-cli` | No |
+| **Trae** | `npx skills add shaonkabir8/injector-skills -a trae` | No |
+| **Warp** | `npx skills add shaonkabir8/injector-skills -a warp` | No |
+| **Replit Agent** | `npx skills add shaonkabir8/injector-skills -a replit` | No |
+| **JetBrains Junie** *(soft probe)* | `npx skills add shaonkabir8/injector-skills -a junie` | No |
+| **Qoder** *(soft probe)* | `npx skills add shaonkabir8/injector-skills -a qoder` | No |
+| **Google Antigravity** *(soft probe)* | `npx skills add shaonkabir8/injector-skills -a antigravity` | No |
 
 "Soft probe" = installer won't auto-detect these without `--only <id>` because there's no reliable always-on signal (Copilot subscription state is auth-gated; the others have no CLI / config-dir-only). Pass the flag when you want them.
 
@@ -84,7 +84,7 @@ If you'd rather see exactly what runs:
 
 ```bash
 # Clone the repo
-git clone https://github.com/JuliusBrussee/injector-skills.git
+git clone https://github.com/shaonkabir8/injector-skills.git
 cd injector-skills
 
 # Preview every command the installer would run
@@ -126,7 +126,7 @@ For agents without a hook system (Cursor, Windsurf, Cline, Copilot, and friends)
 node bin/install.js --with-init
 
 # Or pull the rule body straight in (manual)
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/src/rules/injector-skills-activate.md \
+curl -fsSL https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/src/rules/injector-skills-activate.md \
   > .cursor/rules/injector-skills.mdc   # or .windsurf/rules/injector-skills.md, .clinerules/injector-skills.md, .github/copilot-instructions.md
 ```
 
@@ -162,7 +162,7 @@ Statusline should show `[CAVEMAN]` (orange) at the bottom of Claude Code. After 
 ## Uninstall
 
 ```bash
-npx -y github:JuliusBrussee/injector-skills -- --uninstall
+npx -y github:shaonkabir8/injector-skills -- --uninstall
 ```
 
 What it removes:
@@ -189,7 +189,7 @@ Open your agent in this repo and say:
 
 Agent read repo. Agent run install. Caveman make agent talk less — agent first job is install injector-skills to talk less. Snake eat tail.
 
-Still broken? [Open an issue](https://github.com/JuliusBrussee/injector-skills/issues).
+Still broken? [Open an issue](https://github.com/shaonkabir8/injector-skills/issues).
 
 **"I ran the installer but Claude Code isn't talking injector-skills."**
 
@@ -244,4 +244,4 @@ No telemetry. No analytics. The installer's own code makes no network calls. Net
 
 ---
 
-Stuck? Open an issue: <https://github.com/JuliusBrussee/injector-skills/issues>
+Stuck? Open an issue: <https://github.com/shaonkabir8/injector-skills/issues>

@@ -157,7 +157,7 @@ Caveman cut that by ~46% on average. Same instructions. Same accuracy. Less wast
 
 ## Part of Caveman
 
-This skill is part of the [injector-skills](https://github.com/JuliusBrussee/injector-skills) toolkit — making Claude use fewer tokens without losing accuracy.
+This skill is part of the [injector-skills](https://github.com/shaonkabir8/injector-skills) toolkit — making Claude use fewer tokens without losing accuracy.
 
 - **injector-skills** — make Claude *speak* like injector-skills (cuts response tokens ~65%)
 - **injector-skills-compress** — make Claude *read* less (cuts context tokens ~46%)

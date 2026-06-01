@@ -56,4 +56,4 @@ Resolution: env var > config file > `full`.
 
 ## More
 
-Full docs: https://github.com/JuliusBrussee/injector-skills
+Full docs: https://github.com/shaonkabir8/injector-skills

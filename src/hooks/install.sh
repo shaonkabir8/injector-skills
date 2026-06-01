@@ -2,7 +2,7 @@
 # injector-skills — one-command hook installer for Claude Code
 # Installs: SessionStart hook (auto-load rules) + UserPromptSubmit hook (mode tracking)
 # Usage: bash src/hooks/install.sh
-#   or:  bash <(curl -s https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/src/hooks/install.sh)
+#   or:  bash <(curl -s https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/src/hooks/install.sh)
 #   or:  bash src/hooks/install.sh --force   (re-install over existing hooks)
 set -e
 
@@ -35,7 +35,7 @@ fi
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 HOOKS_DIR="$CLAUDE_DIR/hooks"
 SETTINGS="$CLAUDE_DIR/settings.json"
-REPO_URL="https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/hooks"
+REPO_URL="https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/hooks"
 
 HOOK_FILES=("package.json" "injector-skills-config.js" "injector-skills-activate.js" "injector-skills-mode-tracker.js" "injector-skills-stats.js" "injector-skills-statusline.sh")
 

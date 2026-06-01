@@ -51,7 +51,7 @@ By design, v1 is conservative:
 
 ## Status
 
-Pre-1.0 — the compression rules and field set may change. The plugin is part of the [injector-skills ecosystem](https://github.com/JuliusBrussee/injector-skills); see the parent repo for the full skill suite (`injector-skills`, `cavemem`, `cavekit`, `cavecrew`, `injector-skills-stats`, `injector-skills-init`).
+Pre-1.0 — the compression rules and field set may change. The plugin is part of the [injector-skills ecosystem](https://github.com/shaonkabir8/injector-skills); see the parent repo for the full skill suite (`injector-skills`, `cavemem`, `cavekit`, `cavecrew`, `injector-skills-stats`, `injector-skills-init`).
 
 ## License
 

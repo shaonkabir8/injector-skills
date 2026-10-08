@@ -2,7 +2,7 @@
 
 These hooks are **bundled with the injector-skills plugin** and activate automatically when the plugin is installed. No manual setup required.
 
-If you installed injector-skills standalone (without the plugin), the unified Node installer at `bin/install.js` wires them into your `settings.json` for you — run `node bin/install.js --only claude` from a clone, or `npx -y github:JuliusBrussee/injector-skills -- --only claude` for the curl-pipe path.
+If you installed injector-skills standalone (without the plugin), the unified Node installer at `bin/install.js` wires them into your `settings.json` for you — run `node bin/install.js --only claude` from a clone, or `npx -y github:shaonkabir8/injector-skills -- --only claude` for the curl-pipe path.
 
 ## What's Included
 
@@ -100,7 +100,7 @@ If installed via plugin: disable the plugin — hooks deactivate automatically.
 
 If installed via the standalone Node installer:
 ```bash
-npx -y github:JuliusBrussee/injector-skills -- --uninstall
+npx -y github:shaonkabir8/injector-skills -- --uninstall
 # or, from a clone:
 node bin/install.js --uninstall
 ```

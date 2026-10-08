@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/JuliusBrussee/injector-skills/stargazers"><img src="https://img.shields.io/github/stars/JuliusBrussee/injector-skills?style=flat&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/JuliusBrussee/injector-skills/commits/main"><img src="https://img.shields.io/github/last-commit/JuliusBrussee/injector-skills?style=flat" alt="Last Commit"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/JuliusBrussee/injector-skills?style=flat" alt="License"></a>
+  <a href="https://github.com/shaonkabir8/injector-skills/stargazers"><img src="https://img.shields.io/github/stars/shaonkabir8/injector-skills?style=flat&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/shaonkabir8/injector-skills/commits/main"><img src="https://img.shields.io/github/last-commit/shaonkabir8/injector-skills?style=flat" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/shaonkabir8/injector-skills?style=flat" alt="License"></a>
 </p>
 
 <p align="center">
@@ -81,13 +81,13 @@ Pick your level of grunt — `lite` (drop filler), `full` (default injector-skil
 
 ### <img src="docs/assets/dancing-rock.svg" width="22" height="22" alt="rock"/> Like this trick? Now get whole agent — **injector-skills-code**
 
-This skill shrink what agent **say**. **[injector-skills-code](https://github.com/JuliusBrussee/injector-skills-code)** shrink **everything** — full terminal coding agent, injector-skills top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
+This skill shrink what agent **say**. **[injector-skills-code](https://github.com/shaonkabir8/injector-skills-code)** shrink **everything** — full terminal coding agent, injector-skills top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
 
 ```bash
-npm install -g @juliusbrussee/injector-skills-code
+npm install -g @shaonkabir8/injector-skills-code
 ```
 
-[**▶ Try injector-skills-code now →**](https://github.com/JuliusBrussee/injector-skills-code) — *why use many token when whole agent save*
+[**▶ Try injector-skills-code now →**](https://github.com/shaonkabir8/injector-skills-code) — *why use many token when whole agent save*
 
 </td></tr>
 </table>
@@ -98,10 +98,10 @@ One line. Find every agent. Install for each.
 
 ```bash
 # macOS / Linux / WSL / Git Bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.sh | bash
 
 # Windows (PowerShell 5.1+)
-irm https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.ps1 | iex
 ```
 
 ~30 seconds. Needs Node ≥18. Skip agent you no have. Safe to re-run.
@@ -183,10 +183,10 @@ Caveman teach lobster brevity — same canonical installer, scoped to one agent:
 
 ```bash
 # macOS / Linux / WSL
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/injector-skills/main/install.sh | bash -s -- --only openclaw
+curl -fsSL https://raw.githubusercontent.com/shaonkabir8/injector-skills/main/install.sh | bash -s -- --only openclaw
 
 # Windows (PowerShell): no Node? install Node ≥18 first, then
-npx -y github:JuliusBrussee/injector-skills -- --only openclaw
+npx -y github:shaonkabir8/injector-skills -- --only openclaw
 ```
 
 Two thing happen, no more:
@@ -211,11 +211,11 @@ Five tools. One philosophy: **agent do more with less**.
 
 | Repo | What |
 |------|------|
-| [**injector-skills**](https://github.com/JuliusBrussee/injector-skills) *(you here)* | Output compression — *why use many token when few do trick* |
-| [**injector-skills-code**](https://github.com/JuliusBrussee/injector-skills-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
-| [**cavemem**](https://github.com/JuliusBrussee/cavemem) | Cross-agent memory — *why agent forget when agent can remember* |
-| [**cavekit**](https://github.com/JuliusBrussee/cavekit) | Spec-driven build loop — *why agent guess when agent can know* |
-| [**cavegemma**](https://github.com/JuliusBrussee/finetune-injector-skills) | Gemma 4 31B fine-tuned on injector-skills pairs — *why prompt every turn when weight remember* |
+| [**injector-skills**](https://github.com/shaonkabir8/injector-skills) *(you here)* | Output compression — *why use many token when few do trick* |
+| [**injector-skills-code**](https://github.com/shaonkabir8/injector-skills-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
+| [**cavemem**](https://github.com/shaonkabir8/cavemem) | Cross-agent memory — *why agent forget when agent can remember* |
+| [**cavekit**](https://github.com/shaonkabir8/cavekit) | Spec-driven build loop — *why agent guess when agent can know* |
+| [**cavegemma**](https://github.com/shaonkabir8/finetune-injector-skills) | Gemma 4 31B fine-tuned on injector-skills pairs — *why prompt every turn when weight remember* |
 
 Compose: cavekit drive build, injector-skills compress what agent *say*, cavemem compress what agent *remember*, cavegemma bake compression into weight, injector-skills-code ship it all as one terminal agent. One rock. Two rock. Three rock. Four rock. Five rock. That it.
 
@@ -225,17 +225,17 @@ Compose: cavekit drive build, injector-skills compress what agent *say*, cavemem
 - [CONTRIBUTING.md](./CONTRIBUTING.md) — how to send patch
 - [CLAUDE.md](./CLAUDE.md) — maintainer guide (file ownership, hook architecture, CI)
 - [docs/](./docs/) — extra guides (Windows install, etc.)
-- [Issues](https://github.com/JuliusBrussee/injector-skills/issues) — bug, feature, weird behavior
+- [Issues](https://github.com/shaonkabir8/injector-skills/issues) — bug, feature, weird behavior
 
 ## Star This Repo
 
 Caveman save you token, save you money. Star cost zero. Fair trade. ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JuliusBrussee/injector-skills&type=Date)](https://star-history.com/#JuliusBrussee/injector-skills&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=shaonkabir8/injector-skills&type=Date)](https://star-history.com/#shaonkabir8/injector-skills&Date)
 
 ## Also by Julius Brussee
 
-- **[Revu](https://github.com/JuliusBrussee/revu-swift)** — local-first macOS study app with FSRS spaced repetition. [revu.cards](https://revu.cards)
+- **[Revu](https://github.com/shaonkabir8/revu-swift)** — local-first macOS study app with FSRS spaced repetition. [revu.cards](https://revu.cards)
 
 ## License
 
